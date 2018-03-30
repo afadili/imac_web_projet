@@ -3,23 +3,32 @@
 }
 
 .App-logo {
-  animation: App-logo-spin infinite 20s linear;
+  /*animation: App-logo-spin infinite 20s linear;*/
   height: 80px;
 }
 
 .App-header {
-  background-color: #222;
   height: 150px;
   padding: 20px;
-  color: white;
+  color: #747474;
+}
+
+@font-face {
+	font-family: Fredoka;
+	src: url('FredokaOne-Regular.ttf');
 }
 
 .App-title {
+  font-family: Fredoka;
+  color: #4E9ED7;
+  margin-top: 0;
   font-size: 1.5em;
 }
 
 .App-intro {
   font-size: large;
+  font-style: italic;
+  color: #747474;
 }
 
 @keyframes App-logo-spin {
