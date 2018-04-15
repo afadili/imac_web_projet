@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost:3306
--- Generation Time: Apr 15, 2018 at 03:27 PM
+-- Generation Time: Apr 15, 2018 at 03:35 PM
 -- Server version: 10.1.26-MariaDB-0+deb9u1
 -- PHP Version: 7.0.27-0+deb9u1
 
@@ -1657,230 +1657,11 @@ CREATE TABLE `mood` (
 -- --------------------------------------------------------
 
 --
--- Table structure for table `mytable`
---
-
-CREATE TABLE `mytable` (
-  `emoji` varchar(14) NOT NULL,
-  `name` varchar(78) DEFAULT NULL,
-  `shortName` varchar(56) NOT NULL,
-  `ASCII` varchar(3) DEFAULT NULL,
-  `code` varchar(58) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
-
---
--- Dumping data for table `mytable`
---
-
-INSERT INTO `mytable` (`emoji`, `name`, `shortName`, `ASCII`, `code`) VALUES
-('#️⃣', 'hash key', ':hash:', NULL, 'U+0023 U+FE0F U+20E3'),
-('*️⃣', NULL, ':keycap_star:', NULL, 'U+002A U+FE0F U+20E3'),
-('0️⃣', 'keycap 0', ':zero:', NULL, 'U+0030 U+FE0F U+20E3'),
-('1️⃣', 'keycap 1', ':one:', NULL, 'U+0031 U+FE0F U+20E3'),
-('2️⃣', 'keycap 2', ':two:', NULL, 'U+0032 U+FE0F U+20E3'),
-('3️⃣', 'keycap 3', ':three:', NULL, 'U+0033 U+FE0F U+20E3'),
-('4️⃣', 'keycap 4', ':four:', NULL, 'U+0034 U+FE0F U+20E3'),
-('5️⃣', 'keycap 5', ':five:', NULL, 'U+0035 U+FE0F U+20E3'),
-('6️⃣', 'keycap 6', ':six:', NULL, 'U+0036 U+FE0F U+20E3'),
-('7️⃣', 'keycap 7', ':seven:', NULL, 'U+0037 U+FE0F U+20E3'),
-('8️⃣', 'keycap 8', ':eight:', NULL, 'U+0038 U+FE0F U+20E3'),
-('9️⃣', 'keycap 9', ':nine:', NULL, 'U+0039 U+FE0F U+20E3'),
-('©️', 'copyright sign', ':copyright:', NULL, 'U+00A9 U+FE0F'),
-('®️', 'registered sign', ':registered:', NULL, 'U+00AE U+FE0F'),
-('‼️', 'double exclamation mark', ':bangbang:', NULL, 'U+203C U+FE0F'),
-('⁉️', 'exclamation question mark', ':interrobang:', NULL, 'U+2049 U+FE0F'),
-('™️', 'trade mark sign', ':tm:', NULL, 'U+2122 U+FE0F'),
-('ℹ️', 'information source', ':information_source:', NULL, 'U+2139 U+FE0F'),
-('↔️', 'left right arrow', ':left_right_arrow:', NULL, 'U+2194 U+FE0F'),
-('↕️', 'up down arrow', ':arrow_up_down:', NULL, 'U+2195 U+FE0F'),
-('↖️', 'north west arrow', ':arrow_upper_left:', NULL, 'U+2196 U+FE0F'),
-('↗️', 'north east arrow', ':arrow_upper_right:', NULL, 'U+2197 U+FE0F'),
-('↘️', 'south east arrow', ':arrow_lower_right:', NULL, 'U+2198 U+FE0F'),
-('↙️', 'south west arrow', ':arrow_lower_left:', NULL, 'U+2199 U+FE0F'),
-('↩️', 'leftwards arrow with hook', ':leftwards_arrow_with_hook:', NULL, 'U+21A9 U+FE0F'),
-('↪️', 'rightwards arrow with hook', ':arrow_right_hook:', NULL, 'U+21AA U+FE0F'),
-('⌚', 'watch', ':watch:', NULL, 'U+231A'),
-('⌛', 'hourglass', ':hourglass:', NULL, 'U+231B'),
-('⌨️', NULL, ':keyboard:', NULL, 'U+2328 U+FE0F'),
-('⏏️', NULL, ':eject:', NULL, 'U+23CF U+FE0F'),
-('⏩', 'black right-pointing double triangle', ':fast_forward:', NULL, 'U+23E9'),
-('⏪', 'black left-pointing double triangle', ':rewind:', NULL, 'U+23EA'),
-('⏫', 'black up-pointing double triangle', ':arrow_double_up:', NULL, 'U+23EB'),
-('⏬', 'black down-pointing double triangle', ':arrow_double_down:', NULL, 'U+23EC'),
-('⏭️', NULL, ':black_right_pointing_double_triangle_with_vertical_bar:', NULL, 'U+23ED U+FE0F'),
-('⏮️', NULL, ':black_left_pointing_double_triangle_with_vertical_bar:', NULL, 'U+23EE U+FE0F'),
-('⏯️', NULL, ':black_right_pointing_triangle_with_double_vertical_bar:', NULL, 'U+23EF U+FE0F'),
-('⏰', 'alarm clock', ':alarm_clock:', NULL, 'U+23F0'),
-('⏱️', NULL, ':stopwatch:', NULL, 'U+23F1 U+FE0F'),
-('⏲️', NULL, ':timer_clock:', NULL, 'U+23F2 U+FE0F'),
-('⏳', 'hourglass with flowing sand', ':hourglass_flowing_sand:', NULL, 'U+23F3'),
-('⏸️', NULL, ':double_vertical_bar:', NULL, 'U+23F8 U+FE0F'),
-('⏹️', NULL, ':black_square_for_stop:', NULL, 'U+23F9 U+FE0F'),
-('⏺️', NULL, ':black_circle_for_record:', NULL, 'U+23FA U+FE0F'),
-('Ⓜ️', 'circled latin capital letter m', ':m:', NULL, 'U+24C2 U+FE0F'),
-('▪️', 'black small square', ':black_small_square:', NULL, 'U+25AA U+FE0F'),
-('▫️', 'white small square', ':white_small_square:', NULL, 'U+25AB U+FE0F'),
-('▶️', 'black right-pointing triangle', ':arrow_forward:', NULL, 'U+25B6 U+FE0F'),
-('◀️', 'black left-pointing triangle', ':arrow_backward:', NULL, 'U+25C0 U+FE0F'),
-('◻️', 'white medium square', ':white_medium_square:', NULL, 'U+25FB U+FE0F'),
-('◼️', 'black medium square', ':black_medium_square:', NULL, 'U+25FC U+FE0F'),
-('◽', 'white medium small square', ':white_medium_small_square:', NULL, 'U+25FD'),
-('◾', 'black medium small square', ':black_medium_small_square:', NULL, 'U+25FE'),
-('☀️', 'black sun with rays', ':sunny:', NULL, 'U+2600 U+FE0F'),
-('☁️', 'cloud', ':cloud:', NULL, 'U+2601 U+FE0F'),
-('☂️', NULL, ':umbrella:', NULL, 'U+2602 U+FE0F'),
-('☃️', NULL, ':snowman:', NULL, 'U+2603 U+FE0F'),
-('☄️', NULL, ':comet:', NULL, 'U+2604 U+FE0F'),
-('☎️', 'black telephone', ':phone:', NULL, 'U+260E U+FE0F'),
-('☑️', 'ballot box with check', ':ballot_box_with_check:', NULL, 'U+2611 U+FE0F'),
-('☔', 'umbrella with rain drops', ':umbrella_with_rain_drops:', NULL, 'U+2614'),
-('☕', 'hot beverage', ':coffee:', NULL, 'U+2615'),
-('☘️', NULL, ':shamrock:', NULL, 'U+2618 U+FE0F'),
-('☝️', 'white up pointing index', ':point_up:', NULL, 'U+261D U+FE0F'),
-('☠️', NULL, ':skull_and_crossbones:', NULL, 'U+2620 U+FE0F'),
-('☢️', NULL, ':radioactive_sign:', NULL, 'U+2622 U+FE0F'),
-('☣️', NULL, ':biohazard_sign:', NULL, 'U+2623 U+FE0F'),
-('☦️', NULL, ':orthodox_cross:', NULL, 'U+2626 U+FE0F'),
-('☪️', NULL, ':star_and_crescent:', NULL, 'U+262A U+FE0F'),
-('☮️', NULL, ':peace_symbol:', NULL, 'U+262E U+FE0F'),
-('☯️', NULL, ':yin_yang:', NULL, 'U+262F U+FE0F'),
-('☸️', NULL, ':wheel_of_dharma:', NULL, 'U+2638 U+FE0F'),
-('☹️', NULL, ':white_frowning_face:', NULL, 'U+2639 U+FE0F'),
-('☺️', 'white smiling face', ':relaxed:', NULL, 'U+263A U+FE0F'),
-('♀️', NULL, ':female_sign:', NULL, 'U+2640 U+FE0F'),
-('♂️', NULL, ':male_sign:', NULL, 'U+2642 U+FE0F'),
-('♈', 'aries', ':aries:', NULL, 'U+2648'),
-('♉', 'taurus', ':taurus:', NULL, 'U+2649'),
-('♊', 'gemini', ':gemini:', NULL, 'U+264A'),
-('♋', 'cancer', ':cancer:', NULL, 'U+264B'),
-('♌', 'leo', ':leo:', NULL, 'U+264C'),
-('♍', 'virgo', ':virgo:', NULL, 'U+264D'),
-('♎', 'libra', ':libra:', NULL, 'U+264E'),
-('♏', 'scorpius', ':scorpius:', NULL, 'U+264F'),
-('♐', 'sagittarius', ':sagittarius:', NULL, 'U+2650'),
-('♑', 'capricorn', ':capricorn:', NULL, 'U+2651'),
-('♒', 'aquarius', ':aquarius:', NULL, 'U+2652'),
-('♓', 'pisces', ':pisces:', NULL, 'U+2653'),
-('♠️', 'black spade suit', ':spades:', NULL, 'U+2660 U+FE0F'),
-('♣️', 'black club suit', ':clubs:', NULL, 'U+2663 U+FE0F'),
-('♥️', 'black heart suit', ':hearts:', NULL, 'U+2665 U+FE0F'),
-('♦️', 'black diamond suit', ':diamonds:', NULL, 'U+2666 U+FE0F'),
-('♨️', 'hot springs', ':hotsprings:', NULL, 'U+2668 U+FE0F'),
-('♻️', 'black universal recycling symbol', ':recycle:', NULL, 'U+267B U+FE0F'),
-('♿', 'wheelchair symbol', ':wheelchair:', NULL, 'U+267F'),
-('⚒️', NULL, ':hammer_and_pick:', NULL, 'U+2692 U+FE0F'),
-('⚓', 'anchor', ':anchor:', NULL, 'U+2693'),
-('⚔️', NULL, ':crossed_swords:', NULL, 'U+2694 U+FE0F'),
-('⚕️', NULL, ':staff_of_aesculapius:', NULL, 'U+2695 U+FE0F'),
-('⚖️', NULL, ':scales:', NULL, 'U+2696 U+FE0F'),
-('⚗️', NULL, ':alembic:', NULL, 'U+2697 U+FE0F'),
-('⚙️', NULL, ':gear:', NULL, 'U+2699 U+FE0F'),
-('⚛️', NULL, ':atom_symbol:', NULL, 'U+269B U+FE0F'),
-('⚜️', NULL, ':fleur_de_lis:', NULL, 'U+269C U+FE0F'),
-('⚠️', 'warning sign', ':warning:', NULL, 'U+26A0 U+FE0F'),
-('⚡', 'high voltage sign', ':zap:', NULL, 'U+26A1'),
-('⚪', 'medium white circle', ':white_circle:', NULL, 'U+26AA'),
-('⚫', 'medium black circle', ':black_circle:', NULL, 'U+26AB'),
-('⚰️', NULL, ':coffin:', NULL, 'U+26B0 U+FE0F'),
-('⚱️', NULL, ':funeral_urn:', NULL, 'U+26B1 U+FE0F'),
-('⚽', 'soccer ball', ':soccer:', NULL, 'U+26BD'),
-('⚾', 'baseball', ':baseball:', NULL, 'U+26BE'),
-('⛄', 'snowman without snow', ':snowman_without_snow:', NULL, 'U+26C4'),
-('⛅', 'sun behind cloud', ':partly_sunny:', NULL, 'U+26C5'),
-('⛈️', NULL, ':thunder_cloud_and_rain:', NULL, 'U+26C8 U+FE0F'),
-('⛎', 'ophiuchus', ':ophiuchus:', NULL, 'U+26CE'),
-('⛏️', NULL, ':pick:', NULL, 'U+26CF U+FE0F'),
-('⛑️', NULL, ':helmet_with_white_cross:', NULL, 'U+26D1 U+FE0F'),
-('⛓️', NULL, ':chains:', NULL, 'U+26D3 U+FE0F'),
-('⛔', 'no entry', ':no_entry:', NULL, 'U+26D4'),
-('⛩️', NULL, ':shinto_shrine:', NULL, 'U+26E9 U+FE0F'),
-('⛪', 'church', ':church:', NULL, 'U+26EA'),
-('⛰️', NULL, ':mountain:', NULL, 'U+26F0 U+FE0F'),
-('⛱️', NULL, ':umbrella_on_ground:', NULL, 'U+26F1 U+FE0F'),
-('⛲', 'fountain', ':fountain:', NULL, 'U+26F2'),
-('⛳', 'flag in hole', ':golf:', NULL, 'U+26F3'),
-('⛴️', NULL, ':ferry:', NULL, 'U+26F4 U+FE0F'),
-('⛵', 'sailboat', ':boat:', NULL, 'U+26F5'),
-('⛷️', NULL, ':skier:', NULL, 'U+26F7 U+FE0F'),
-('⛸️', NULL, ':ice_skate:', NULL, 'U+26F8 U+FE0F'),
-('⛹️', NULL, ':person_with_ball:', NULL, 'U+26F9 U+FE0F'),
-('⛹️‍♀️', NULL, ':woman-bouncing-ball:', NULL, 'U+26F9 U+FE0F U+200D U+2640 U+FE0F'),
-('⛹️‍♂️', NULL, ':man-bouncing-ball:', NULL, 'U+26F9 U+FE0F U+200D U+2642 U+FE0F'),
-('⛺', 'tent', ':tent:', NULL, 'U+26FA'),
-('⛽', 'fuel pump', ':fuelpump:', NULL, 'U+26FD'),
-('✂️', 'black scissors', ':scissors:', NULL, 'U+2702 U+FE0F'),
-('✅', 'white heavy check mark', ':white_check_mark:', NULL, 'U+2705'),
-('✈️', 'airplane', ':airplane:', NULL, 'U+2708 U+FE0F'),
-('✉️', 'envelope', ':email:', NULL, 'U+2709 U+FE0F'),
-('✊', 'raised fist', ':fist:', NULL, 'U+270A'),
-('✋', 'raised hand', ':hand:', NULL, 'U+270B'),
-('✌️', 'victory hand', ':v:', NULL, 'U+270C U+FE0F'),
-('✍️', NULL, ':writing_hand:', NULL, 'U+270D U+FE0F'),
-('✏️', 'pencil', ':pencil2:', NULL, 'U+270F U+FE0F'),
-('✒️', 'black nib', ':black_nib:', NULL, 'U+2712 U+FE0F'),
-('✔️', 'heavy check mark', ':heavy_check_mark:', NULL, 'U+2714 U+FE0F'),
-('✖️', 'heavy multiplication x', ':heavy_multiplication_x:', NULL, 'U+2716 U+FE0F'),
-('✝️', NULL, ':latin_cross:', NULL, 'U+271D U+FE0F'),
-('✡️', NULL, ':star_of_david:', NULL, 'U+2721 U+FE0F'),
-('✨', 'sparkles', ':sparkles:', NULL, 'U+2728'),
-('✳️', 'eight spoked asterisk', ':eight_spoked_asterisk:', NULL, 'U+2733 U+FE0F'),
-('✴️', 'eight pointed black star', ':eight_pointed_black_star:', NULL, 'U+2734 U+FE0F'),
-('❄️', 'snowflake', ':snowflake:', NULL, 'U+2744 U+FE0F'),
-('❇️', 'sparkle', ':sparkle:', NULL, 'U+2747 U+FE0F'),
-('❌', 'cross mark', ':x:', NULL, 'U+274C'),
-('❎', 'negative squared cross mark', ':negative_squared_cross_mark:', NULL, 'U+274E'),
-('❓', 'black question mark ornament', ':question:', NULL, 'U+2753'),
-('❔', 'white question mark ornament', ':grey_question:', NULL, 'U+2754'),
-('❕', 'white exclamation mark ornament', ':grey_exclamation:', NULL, 'U+2755'),
-('❗', 'heavy exclamation mark symbol', ':exclamation:', NULL, 'U+2757'),
-('❣️', NULL, ':heavy_heart_exclamation_mark_ornament:', NULL, 'U+2763 U+FE0F'),
-('❤️', 'heavy black heart', ':heart:', '<3', 'U+2764 U+FE0F'),
-('➕', 'heavy plus sign', ':heavy_plus_sign:', NULL, 'U+2795'),
-('➖', 'heavy minus sign', ':heavy_minus_sign:', NULL, 'U+2796'),
-('➗', 'heavy division sign', ':heavy_division_sign:', NULL, 'U+2797'),
-('➡️', 'black rightwards arrow', ':arrow_right:', NULL, 'U+27A1 U+FE0F'),
-('➰', 'curly loop', ':curly_loop:', NULL, 'U+27B0'),
-('➿', 'double curly loop', ':loop:', NULL, 'U+27BF'),
-('⤴️', 'arrow pointing rightwards then curving upwards', ':arrow_heading_up:', NULL, 'U+2934 U+FE0F'),
-('⤵️', 'arrow pointing rightwards then curving downwards', ':arrow_heading_down:', NULL, 'U+2935 U+FE0F'),
-('⬅️', 'leftwards black arrow', ':arrow_left:', NULL, 'U+2B05 U+FE0F'),
-('⬆️', 'upwards black arrow', ':arrow_up:', NULL, 'U+2B06 U+FE0F'),
-('⬇️', 'downwards black arrow', ':arrow_down:', NULL, 'U+2B07 U+FE0F'),
-('⬛', 'black large square', ':black_large_square:', NULL, 'U+2B1B'),
-('⬜', 'white large square', ':white_large_square:', NULL, 'U+2B1C'),
-('⭐', 'white medium star', ':star:', NULL, 'U+2B50'),
-('⭕', 'heavy large circle', ':o:', NULL, 'U+2B55'),
-('〰️', 'wavy dash', ':wavy_dash:', NULL, 'U+3030 U+FE0F'),
-('〽️', 'part alternation mark', ':part_alternation_mark:', NULL, 'U+303D U+FE0F'),
-('㊗️', 'circled ideograph congratulation', ':congratulations:', NULL, 'U+3297 U+FE0F'),
-('㊙️', 'circled ideograph secret', ':secret:', NULL, 'U+3299 U+FE0F'),
-('🧦', 'socks', ':socks:', NULL, 'U+1F9E6'),
-('🧟‍♀️', NULL, ':female_zombie:', NULL, 'U+1F9DF U+200D U+2640 U+FE0F'),
-('🧟‍♂️', NULL, ':male_zombie:', NULL, 'U+1F9DF U+200D U+2642 U+FE0F'),
-('👩‍⚕️', NULL, ':female-doctor:', NULL, 'U+1F469 U+200D U+2695 U+FE0F'),
-('👩‍⚖️', NULL, ':female-judge:', NULL, 'U+1F469 U+200D U+2696 U+FE0F'),
-('👩‍✈️', NULL, ':female-pilot:', NULL, 'U+1F469 U+200D U+2708 U+FE0F'),
-('👩‍❤️‍👩', NULL, ':woman-heart-woman:', NULL, 'U+1F469 U+200D U+2764 U+FE0F U+200D U+1F469'),
-('👩‍❤️‍💋‍👩', NULL, ':woman-kiss-woman:', NULL, 'U+1F469 U+200D U+2764 U+FE0F U+200D U+1F48B U+200D U+1F469'),
-('👩‍🚒', NULL, ':female-firefighter:', NULL, 'U+1F469 U+200D U+1F692'),
-('👩‍👩‍👧', NULL, ':woman-woman-girl:', NULL, 'U+1F469 U+200D U+1F469 U+200D U+1F467'),
-('👩‍👩‍👧‍👧', NULL, ':woman-woman-girl-girl:', NULL, 'U+1F469 U+200D U+1F469 U+200D U+1F467 U+200D U+1F467'),
-('🛳️', NULL, ':passenger_ship:', NULL, 'U+1F6F3 U+FE0F'),
-('🕵️‍♀️', NULL, ':female-detective:', NULL, 'U+1F575 U+FE0F U+200D U+2640 U+FE0F'),
-('🕵️‍♂️', NULL, ':male-detective:', NULL, 'U+1F575 U+FE0F U+200D U+2642 U+FE0F'),
-('🏳️‍🌈', NULL, ':rainbow-flag:', NULL, 'U+1F3F3 U+FE0F U+200D U+1F308'),
-('👁️‍🗨️', NULL, ':eye-in-speech-bubble:', NULL, 'U+1F441 U+FE0F U+200D U+1F5E8 U+FE0F'),
-('🇿🇼', 'regional indicator symbol letters zw', ':flag-zw:', NULL, 'U+1F1FF U+1F1FC'),
-('🏴󠁧󠁢󠁷󠁬󠁳󠁿', 'regional indicator symbol letters wales', ':flag-wales:', NULL, 'U+1F3F4 U+E0067 U+E0062 U+E0077 U+E006C U+E0073 U+E007F');
-
--- --------------------------------------------------------
-
---
 -- Table structure for table `relation`
 --
 
 CREATE TABLE `relation` (
-  `idEmoji` varchar(8) CHARACTER SET utf8 COLLATE utf8_bin NOT NULL,
+  `idEmoji` int(11) NOT NULL,
   `idHashtag` int(11) DEFAULT NULL,
   `idStat` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
@@ -1932,12 +1713,6 @@ ALTER TABLE `mood`
   ADD PRIMARY KEY (`id`);
 
 --
--- Indexes for table `mytable`
---
-ALTER TABLE `mytable`
-  ADD PRIMARY KEY (`emoji`);
-
---
 -- Indexes for table `relation`
 --
 ALTER TABLE `relation`
@@ -1986,11 +1761,18 @@ ALTER TABLE `statistiques`
 --
 
 --
+-- Constraints for table `emoji`
+--
+ALTER TABLE `emoji`
+  ADD CONSTRAINT `emoji_ibfk_1` FOREIGN KEY (`idMood`) REFERENCES `mood` (`id`);
+
+--
 -- Constraints for table `relation`
 --
 ALTER TABLE `relation`
   ADD CONSTRAINT `relation_ibfk_1` FOREIGN KEY (`idHashtag`) REFERENCES `hashtag` (`id`),
-  ADD CONSTRAINT `relation_ibfk_2` FOREIGN KEY (`idStat`) REFERENCES `statistiques` (`id`);
+  ADD CONSTRAINT `relation_ibfk_2` FOREIGN KEY (`idStat`) REFERENCES `statistiques` (`id`),
+  ADD CONSTRAINT `relation_ibfk_3` FOREIGN KEY (`idEmoji`) REFERENCES `emoji` (`id`);
 
 --
 -- Constraints for table `statistiques`
