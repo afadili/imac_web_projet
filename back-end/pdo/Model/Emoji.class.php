@@ -1,5 +1,5 @@
 <?php
-require_once 'PDO/MyPDO.emoji-tracker.include.php'; 
+require_once '../PDO/MyPDO.emoji-tracker.include.php'; 
 
 /* -------------------------------------------------
  * EMOJI CLASS
@@ -156,7 +156,7 @@ class Emoji {
 	 * @params idHashtag, integer id of the used hashtag
 	 * @return array<Emoji> list of instances of emoji
 	 */
-	public function getFromHashtag($idHashtag) {
+	public static function getFromHashtag($idHashtag) {
 		$query = "
 			SELECT * FROM emoji 
 			WHERE id IN ( SELECT idEmoji FROM relation WHERE idHashtag = ? )

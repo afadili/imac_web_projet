@@ -1,19 +1,16 @@
 <?php
-require_once 'PDO/MyPDO.emoji-tracker.include.php'; 
+require_once '../PDO/MyPDO.emoji-tracker.include.php'; 
 
 /* -------------------------------------------------
- * Mood CLASS
- *	> get id, name
- *	> get all
- *	> get from emoji
+ * BATCH CLASS
  * -------------------------------------------------
  */
 
-class Mood {
+class Batch {
 	/* --- Attributes --- */
 
 	private $id = null;
-	private $name = null;
+	private $date = null;
 
 
 
@@ -29,27 +26,27 @@ class Mood {
 		return $this->id; 
 	}
 
-	// get name
-	public function getName() {
-		return $this->name;
+	// get date
+	public function getDate() {
+		return $this->date;
 	}
 
 
 
 	/* --- Complex Getters --- */
 
-	/* GET ALL MOODS
-	 * Grabs all the moods from the database
-	 * @return array<Mood>
+	/* GET ALL BATCH
+	 * Grabs all the batchs from the database
+	 * @return array<Batch>
 	 */
 
 	public static function getAll() {
-		$stmt = MyPDO::getInstance()->prepare("SELECT * FROM mood");
+		$stmt = MyPDO::getInstance()->prepare("SELECT * FROM batch");
 		$stmt->execute();
-		$stmt->setFetchMode(PDO::FETCH_CLASS, "Mood");
+		$stmt->setFetchMode(PDO::FETCH_CLASS, "Batch");
 		if (($object = $stmt->fetchAll()) !== false)
 			return $object;
 		else
-			throw new Exception("Mood table does'nt exist? Hmmm...");
+			throw new Exception("Batch table does'nt exist? Hmmm...");
 	}
 }
