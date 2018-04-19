@@ -1,5 +1,5 @@
 <?php
-require_once 'MyPDO/MyPDO.emoji-tracker.include.php'; 
+require_once 'PDO/MyPDO.emoji-tracker.include.php'; 
 
 /* -------------------------------------------------
  * STATISTICS CLASS
@@ -132,7 +132,7 @@ class Statistics {
 				SELECT idStat FROM relation
 				WHERE idEmoji = ? AND idHashtag = NULL
 			)
-		"
+		";
 
 		$stmt = MyPDO::getInstance()->prepare($query);
 		$stmt->execute(array($idEmoji));
@@ -151,14 +151,14 @@ class Statistics {
 	 * @return array<Statistics>
 	 */
 
-	public static function getFromEmoji($idEmoji, $idHashtag) {
+	public static function getFromEmojiHashtag($idEmoji, $idHashtag) {
 		$query = "
 			SELECT * FROM statistics
 			WHERE id IN (
 				SELECT idStat FROM relation
 				WHERE idEmoji = ? AND idHashtag = ?
 			)
-		"
+		";
 
 		$stmt = MyPDO::getInstance()->prepare($query);
 		$stmt->execute(array($idEmoji, $idHashtag));

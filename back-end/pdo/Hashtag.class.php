@@ -1,5 +1,5 @@
 <?php
-require_once 'MyPDO/MyPDO.emoji-tracker.include.php'; 
+require_once 'PDO/MyPDO.emoji-tracker.include.php'; 
 
 /* -------------------------------------------------
  * HASHTAG CLASS

@@ -75,25 +75,3 @@ final class MyPDO {
 		return self::$dsn !== null;
 	}
 }
-
-/*
-EXEMPLE DE CONFIGURATION ET D'UTILISATION
-// dans le fichier MyPDO.my_db.include.php : 
-
-MyPDO::setConfiguration('mysql:host=mysql;dbname=imac-movies;charset=utf8', 'login', 'mdp');
-
-// dans un fichier qui utilise la bdd :
-$stmt = MyPDO::getInstance()->prepare(<<<SQL
-	SELECT *
-	FROM Cast
-	ORDER BY lastname, firstname
-SQL;
-);
-
-$stmt->execute();
-
-while (($row = $stmt->fetch()) !== false) {
-	echo "<div>{$row['lastname']}</div>"
-}
-
-*/
