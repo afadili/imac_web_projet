@@ -22,6 +22,16 @@ class Hashtag {
 	// disable constructor
 	function __construct() {}
 
+	public static function createFromWord($word) {
+		$stmt = MyPDO::getInstance()->prepare("SELECT * FROM hashtag WHERE word = ?");
+		$stmt->execute(array($word));
+		$stmt->setFetchMode(PDO::FETCH_CLASS, "Hashtag");
+		if (($object = $stmt->fetch()) !== false)
+			return $object;
+		else
+			throw new Exception("Hashtag \"$word\" is not referenced");
+	}
+
 
 
 	/* --- Basic Getters --- */
