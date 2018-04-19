@@ -31,7 +31,7 @@ function getBatch($tweets){
        if(count($tweets->statuses)) {
            foreach($tweets->statuses as $tweet) {
              if (has_emojis($tweet->text) == true){
-               $tweetwithemoji = $tweetwithemoji+1;.
+               $tweetwithemoji = $tweetwithemoji+1;
                getTweet($tweet);
                gethashtag($tweet);
                getRetweet($tweet);

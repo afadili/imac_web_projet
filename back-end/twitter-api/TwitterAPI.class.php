@@ -1,6 +1,5 @@
 <?php
 // twitter access
-
 require 'twitter/autoload.php';
 use Abraham\TwitterOAuth\TwitterOAuth;
 
@@ -62,18 +61,23 @@ class TwitterAPICall {
 		return count($this->tweets);
 	}
 
+	public function getEmojis() {
+		require_once '../data/Emoji.class.php';
+
+	}
+
 
 	
 	/* ---- CONSTRUCTOR ---- */
 
-	public function __constructor($subject = 'e') {
+	public function __construct($subject = 'e') {
 		$this->tweets = self::$connection->get(
 			"search/tweets", 
 			[
 				"q" => $subject, 
-				"lang" => self::regionCode, 
-				"result_type" => self::result_type, 
-				"count" => self::resultCount
+				"lang" => self::$regionCode, 
+				"result_type" => self::$resultType, 
+				"count" => self::$resultCount
 			]
 		);
 	}
