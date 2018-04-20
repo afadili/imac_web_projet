@@ -1,4 +1,4 @@
-<?php
+   <?php
 // twitter access
 require 'twitter/autoload.php';
 use Abraham\TwitterOAuth\TwitterOAuth;
@@ -47,6 +47,26 @@ class TwitterAPICall {
 	}
 
 
+	/* --- API CALL METHODS --- */
+
+	// set query params
+	public static function setQueryParams($regionCode = 'en', $resultType = 'recent', $resultCount = 100) {
+		self::$regionCode = $regionCode;
+		self::$resultType = $resultType;
+		self::$resultCount = $resultCount;		
+	}
+
+	public function __construct($subject = 'e') {
+		$this->tweets = self::$connection->get(
+			"search/tweets", 
+			[
+				"q" => $subject, 
+				"lang" => self::$regionCode, 
+				"result_type" => self::$resultType, 
+				"count" => self::$resultCount
+			]
+		);
+	}
 
 
 	/* ---- API CALL PROPERTIES ---- */
@@ -61,25 +81,7 @@ class TwitterAPICall {
 		return count($this->tweets);
 	}
 
-	public function getEmojis() {
-		require_once '../data/Emoji.class.php';
-
+	public function getTweets() {
+		return $this->tweets;
 	}
-
-
-	
-	/* ---- CONSTRUCTOR ---- */
-
-	public function __construct($subject = 'e') {
-		$this->tweets = self::$connection->get(
-			"search/tweets", 
-			[
-				"q" => $subject, 
-				"lang" => self::$regionCode, 
-				"result_type" => self::$resultType, 
-				"count" => self::$resultCount
-			]
-		);
-	}
-
 }
