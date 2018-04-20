@@ -20,10 +20,6 @@ class Statistics {
 	private $bestTweet = null;
 
 
-	/* --- Constructor --- */
-	
-	// disable constructor
-	function __construct() {}
 
 	// create from id
 	public static function createFromId($id) {
@@ -169,4 +165,37 @@ class Statistics {
 		else
 			throw new Exception("Emoji id:$idEmoji or Hashtag id:$idHashtag does not exists.");
 	}
+
+
+	/* ---- SETTERS ---- */
+	/* !!! WARNING: SETTERS AND CONSTRUCTORS SHOULD NEVER BE CALLED BY ANY FRONT-END REQUESTS !!! */
+	function __construct(array $data) {
+		require_once "Batch.class.php";
+
+		$query = "
+			INSERT INTO statistics(idBatch,  nbTweets,  avgRetweets,  avgFavorites,  avgResponses,  avgPopularity,  bestTweet)
+			VALUES(:batch,  :nbTweets, :avgRetweets, :avgFavorites, :avgResponses, :avgPopularity, :best);
+			SELECT * FROM statistics ORDER BY id DESC LIMIT 1;
+		";
+
+		$params = array(
+			":batch" => Batch::getActive()->getId(),
+			":nbTweets" => $data["nbTweets"],
+			":avgRetweets" => $data["avgRetweets"],
+			":avgFavorites" => $data["avgFavorites"],
+			":avgResponses" => $data["avgResponses"],
+			":avgPopularity" => $data["avgPopularity"],
+			":best" => $data["best"]
+		);
+
+		$stmt = MyPDO::getInstance()->prepare($query);
+		$stmt->execute($params);
+
+		$stmt->setFetchMode(PDO::FETCH_CLASS, "Statistics");
+
+		if (($this = $stmt->fetch()) === false) {
+			throw new Exception("Failed to create stat");
+		}
+	}
+
 }

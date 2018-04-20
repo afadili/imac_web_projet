@@ -23,12 +23,6 @@ class Emoji {
 	private $ascii = null;
 
 
-
-	/* --- Constructor --- */
-	
-	// disable constructor
-	function __construct() {}
-
 	// create from emoji character
 	public static function createFromChar($char) {
 		$stmt = MyPDO::getInstance()->prepare("SELECT * FROM emoji WHERE emoji = ?");
@@ -171,4 +165,12 @@ class Emoji {
 		else
 			throw new Exception("Hashtag id:$idHashtag does not exists.");
 	}
+
+	
+
+
+	/* --- Constructor --- */
+	
+	// disable constructor
+	private function __construct() {}
 }
