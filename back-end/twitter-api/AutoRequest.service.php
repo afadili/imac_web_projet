@@ -19,13 +19,22 @@ function getEmojiChars() {
 function sortByEmojis($tweetArray, $emojiCodes) {
 	$ret = array();
 
+	// Turn emojiCodes array into a regex expressions array
+	$emojiRegexs = array_map(
+		function($c) {
+			return '/*\\'.substr($c, 2).'*/'; //u for unicode
+		}, 
+		$emojiCodes
+	);
+
+
 	// scan tweets for each code
 	foreach ($tweetArray as $tweet) {
-		foreach ($emojiCodes as $emoji) {
-			$ret[$emoji] = array();
-			if (strstr($tweet->text, $emoji))
-				array_push($ret[$emoji], $tweet);
+		foreach ($emojiRegexs as $key=>$regex) {
+			if (preg_match($tweet->text,$regex));
+				echo "found $regex";
 		}
+		echo 'no emojis in'.$tweet->text."<br>";
 	}
 
 	return $ret;
@@ -36,7 +45,7 @@ function startService() {
 	// Wait time between two API call in seconds
 	$WAIT_TIME = 0;
 
-	// make an array of unicode codes for all emojis
+	// make an array of all emojis
 	$emojis = getEmojiChars();
 
 	// Set query params
@@ -44,19 +53,35 @@ function startService() {
 
 	// lauch server
 	do {
+		// prepare an array for sorted tweets
+		$tweetsSortedByEmojis = array();
+
 		// establish connection to tweeter API
 		TwitterAPICall::connect();
 
 		// get tweets from the API call
 		$tweets = (new TwitterAPICall())->getTweets();
+		
+		//filter out tweets with no emojis
+		foreach ($tweets as $t) {
+			foreach ($emojis as $e) {
+				if (mb_stripos($t->text, $e, 0, "UTF-8")) {
+					if (isset($tweetsSortedByEmojis[$e])) {
+						array_push($tweetsSortedByEmojis[$e], $t);
+					} else {
+						$tweetsSortedByEmojis[$e] = [$t];
+					}
+				}
+			}
+		}
 
-		// sort by emojis
-		$tweetsByEmojis = sortByEmojis($tweets, $emojis);
-		var_dump($tweetsByEmojis);
+		var_dump(array_keys($tweetsSortedByEmojis));
 
 		// wait...
 		$start = time();
 		while($start + $WAIT_TIME > time());
 	} while (false);
 }
+
 startService();
+
