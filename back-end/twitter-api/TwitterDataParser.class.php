@@ -23,6 +23,19 @@ class TwitterDataParser implements TwitterDataHandler {
 
 	/* ---- GETTERS ---- */
 
+	// @return array<Tweets>
+	private function getTweets() {
+		return $this->twitterData->statuses;
+	}
+
+	// @returns array<String> an array of Hashtags
+	private function getHashtags() {
+		return array_map(
+			$this->twitterData->entities->hashtags,
+			function($h) {return $h->text;}
+		);
+	}
+
 	/* Get Tweets grouped by Emoji
 	 * Returns a 2 dimentions array of tweets.
 	 * Columns keys are emojis, grouping tweets with one or more occurences of theses emojis
@@ -43,8 +56,6 @@ class TwitterDataParser implements TwitterDataHandler {
 		return $ret;
 	}
 
-
-	/* ---- GET TOTALS ---- */
 
 	// @returns integer the number of tweets retrieved
 	private function getTweetCount() {
@@ -68,8 +79,6 @@ class TwitterDataParser implements TwitterDataHandler {
 		));
 	}
 
-
-	/* ----- GET AVERAGES -----*/
 
 	// @return float average of retweets per tweet
 	private function getAverageRetweetsCount() {

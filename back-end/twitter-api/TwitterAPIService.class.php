@@ -12,9 +12,11 @@ use Abraham\TwitterOAuth\TwitterOAuth;
 class TwitterAPIService {
 	
 	/* ---- CONSTANTS ---- */
+	// must be false on production
+	const DEBUG = true;
 
 	// integer, delay in seconds between two twitter api calls 
-	private static $REQUEST_DELAY = 3600;
+	private static $REQUEST_DELAY = 0;
 
 	// query parameters
 	private static $REQUEST_SUBJECT = 'e';
@@ -40,7 +42,8 @@ class TwitterAPIService {
 	// active api connection
 	private static $connection;
 
-	// closure handling every new request
+	// Object implementing TwitterDataHandler
+	// handles every new request
 	private static $requestHandler;
 
 	private static $data;
@@ -67,12 +70,11 @@ class TwitterAPIService {
 	 */
 	public static function start(TwitterDataHandler $onRequest) {
 		self::$requestHandler = $onRequest;
-		var_dump(self::$requestHandler);
 
-		//while (true) {
+		do {
 			self::newRequest();
 			sleep(self::$REQUEST_DELAY);
-		//}
+		} while(!self::DEBUG);
 	}
 
 
