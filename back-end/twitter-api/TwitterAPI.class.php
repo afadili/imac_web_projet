@@ -78,10 +78,10 @@ class TwitterAPICall {
 	/* ---- GETTERS ----- */
 
 	public function getTweetCount() {
-		return count($this->tweets);
+		return count($this->tweets->statuses);
 	}
 
 	public function getTweets() {
-		return $this->tweets;
+		return $this->tweets->statuses;
 	}
 }
