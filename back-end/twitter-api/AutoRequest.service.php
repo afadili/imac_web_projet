@@ -22,18 +22,9 @@ function sortByEmojis($tweetArray, $emojiCodes) {
 	// scan tweets for each code
 	foreach ($tweetArray as $tweet) {
 		foreach ($emojiCodes as $emoji) {
-			// trucate 'U+' from utf code
-			$code = substr($emoji, 2);
-
-			// build regex expression
-			$regexEmoji = "/[\x{$code}]/u";
-
-			// look for matches between regex and tweet
-			preg_match($regexEmoji, $tweet->text, $matches_emo);
-			if (!empty($matches_emo[0])) {
-				echo $tweet->text."<br>";
-				$ret[$emoji] = $tweet;
-			}
+			$ret[$emoji] = array();
+			if (strstr($tweet->text, $emoji))
+				array_push($ret[$emoji], $tweet);
 		}
 	}
 
@@ -46,7 +37,7 @@ function startService() {
 	$WAIT_TIME = 0;
 
 	// make an array of unicode codes for all emojis
-	$emojis = getEmojiCodes();
+	$emojis = getEmojiChars();
 
 	// Set query params
 	TwitterAPICall::setQueryParams('en','recent',100);
@@ -61,11 +52,11 @@ function startService() {
 
 		// sort by emojis
 		$tweetsByEmojis = sortByEmojis($tweets, $emojis);
+		var_dump($tweetsByEmojis);
 
 		// wait...
 		$start = time();
 		while($start + $WAIT_TIME > time());
 	} while (false);
 }
-
-var_dump(getEmojiChars());
+startService();
