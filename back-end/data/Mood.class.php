@@ -17,12 +17,6 @@ class Mood {
 
 
 
-	/* --- Constructor --- */
-	
-	// disable constructor
-	function __construct() {}
-
-
 	/* --- Basic Getters --- */
 	// get id
 	public function getId() { 
@@ -52,4 +46,11 @@ class Mood {
 		else
 			throw new Exception("Mood table does'nt exist? Hmmm...");
 	}
+
+
+
+	/* --- Constructor --- */
+	
+	// disable constructor
+	private function __construct() {}
 }

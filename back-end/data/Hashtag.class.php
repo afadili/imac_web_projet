@@ -17,10 +17,6 @@ class Hashtag {
 
 
 
-	/* --- Constructor --- */
-	
-	// disable constructor
-	function __construct() {}
 
 	public static function createFromWord($word) {
 		$stmt = MyPDO::getInstance()->prepare("SELECT * FROM hashtag WHERE word = ?");
@@ -87,4 +83,22 @@ class Hashtag {
 		else
 			throw new Exception("Emoji id:$idEmoji does not exists.");
 	}
+
+
+
+	/* ---- CONSTRUCTOR & SETTERS ---- */
+	/* !!! WARNING: CONSTRUCTOR AND SETTERS SHOULD NEVER BE CALLED BY ANY FRONT-END REQUESTS !!! */
+
+	
+	public function __construct($word) {
+		$query = "
+			IF NOT EXISTS (SELECT * FROM hashtag WHERE word = :word)
+				INSERT INTO hashtag(word) VALUES(:word)
+		"
+		$stmt = MyPDO::getInstance()->prepare($query);
+		$stmt->execute(array(":word" => $word));
+
+		$this = self::createFromWord($word);
+	}
+
 }
