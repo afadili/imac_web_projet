@@ -17,7 +17,6 @@ class Hashtag {
 
 
 
-
 	public static function createFromWord($word) {
 		$stmt = MyPDO::getInstance()->prepare("SELECT * FROM hashtag WHERE word = ?");
 		$stmt->execute(array($word));
@@ -90,15 +89,21 @@ class Hashtag {
 	/* !!! WARNING: CONSTRUCTOR AND SETTERS SHOULD NEVER BE CALLED BY ANY FRONT-END REQUESTS !!! */
 
 	
-	public function __construct($word) {
+	public static function sudoCreateFromWord($word) {
 		$query = "
-			IF NOT EXISTS (SELECT * FROM hashtag WHERE word = :word)
-				INSERT INTO hashtag(word) VALUES(:word)
-		"
-		$stmt = MyPDO::getInstance()->prepare($query);
-		$stmt->execute(array(":word" => $word));
+			INSERT INTO hashtag(word)
+			SELECT * FROM (SELECT :word) AS tmp
+			WHERE NOT EXISTS (
+			    SELECT word FROM hashtag WHERE word = :word
+			) LIMIT 1
+		";
 
-		$this = self::createFromWord($word);
+		$stmt = MyPDO::getInstance()->prepare($query);
+		$stmt->execute(array(":word" => "$word"));
+
+		return self::createFromWord($word);
 	}
+
+	private function __construct() {}
 
 }

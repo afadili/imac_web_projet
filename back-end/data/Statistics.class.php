@@ -169,15 +169,18 @@ class Statistics {
 
 	/* ---- SETTERS ---- */
 	/* !!! WARNING: SETTERS AND CONSTRUCTORS SHOULD NEVER BE CALLED BY ANY FRONT-END REQUESTS !!! */
-	function __construct(array $data) {
+	public static function addStatistics(array $data) {
 		require_once "Batch.class.php";
 
+		// insert data and return the new entry
 		$query = "
 			INSERT INTO statistics(idBatch,  nbTweets,  avgRetweets,  avgFavorites,  avgResponses,  avgPopularity,  bestTweet)
 			VALUES(:batch,  :nbTweets, :avgRetweets, :avgFavorites, :avgResponses, :avgPopularity, :best);
 			SELECT * FROM statistics ORDER BY id DESC LIMIT 1;
 		";
 
+		// bind values
+		// TODO : Interface getavgRetweet, fav etc...
 		$params = array(
 			":batch" => Batch::getActive()->getId(),
 			":nbTweets" => $data["nbTweets"],
@@ -193,9 +196,14 @@ class Statistics {
 
 		$stmt->setFetchMode(PDO::FETCH_CLASS, "Statistics");
 
-		if (($this = $stmt->fetch()) === false) {
+		if (($obj = $stmt->fetch()) !== false) {
+			return $obj;
+		} else {
 			throw new Exception("Failed to create stat");
 		}
 	}
+
+	// disable constructor
+	private function __construct() {}
 
 }
