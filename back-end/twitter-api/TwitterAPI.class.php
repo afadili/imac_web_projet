@@ -1,6 +1,7 @@
    <?php
 // twitter access
 require 'twitter/autoload.php';
+
 use Abraham\TwitterOAuth\TwitterOAuth;
 
 class TwitterAPICall {
@@ -26,6 +27,7 @@ class TwitterAPICall {
 	private static $resultCount = 100;
 
 
+
 	/* --- API AUTHENTIFICATION METHODS --- */
 
 	// set secret keys and token
@@ -45,6 +47,7 @@ class TwitterAPICall {
 			self::$accessTokenSecret
 		);
 	}
+
 
 
 	/* --- API CALL METHODS --- */
@@ -69,18 +72,24 @@ class TwitterAPICall {
 	}
 
 
-	/* ---- API CALL PROPERTIES ---- */
 
-	private $tweets = null;
+	/* ---- PROPERTIES ---- */
+
+	protected $tweets = null;
 
 
 
 	/* ---- GETTERS ----- */
 
-	public function getTweetCount() {
-		return count($this->tweets->statuses);
+	// @returns array<String> an array of Hashtags
+	public function getHashtags() {
+		return array_map(
+			$this->entities->hashtags,
+			function($h) {return $h->text;}
+		)
 	}
 
+	// @return array<Tweets>
 	public function getTweets() {
 		return $this->tweets->statuses;
 	}
