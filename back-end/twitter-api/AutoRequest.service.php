@@ -1,87 +1,123 @@
 <?php
 require 'TwitterAPI.emoji-tracker.include.php';
-require '../data/Emoji.class.php';
 
-function getEmojiCodes() {
-	$emojis = array();
-	foreach (Emoji::getAll() as $emoji)
-		$emojis = array_merge($emojis, explode(' ', $emoji->getCode()));
-	return array_unique($emojis);
-}
+class AutoRequestService {
+	/* ---- PROPERTIES ---- */
 
-function getEmojiChars() {
-	return array_map(function($e) {
-		return $e->getEmoji();
-	}, Emoji::getAll());
-}
+	/* Parameter:
+	 * integer, delay in seconds between two twitter api calls 
+	 */
+	private static $REQUEST_DELAY = 3600;
 
+	// stores api call results
+	private static $apiCall = null;
 
-function sortByEmojis($tweetArray, $emojiCodes) {
-	$ret = array();
-
-	// Turn emojiCodes array into a regex expressions array
-	$emojiRegexs = array_map(
-		function($c) {
-			return '/*\\'.substr($c, 2).'*/'; //u for unicode
-		}, 
-		$emojiCodes
-	);
+	// Closure handling every new request
+	private static $onRequest = null;
 
 
-	// scan tweets for each code
-	foreach ($tweetArray as $tweet) {
-		foreach ($emojiRegexs as $key=>$regex) {
-			if (preg_match($tweet->text,$regex));
-				echo "found $regex";
-		}
-		echo 'no emojis in'.$tweet->text."<br>";
+
+	/* ---- INIT ---- */
+
+	/* Start Service
+	 * Initialise variables, twitter API
+	 * launch infinite loop
+	 * launch infinite loop
+	 * launch infinite loop
+	 *
+	 * @param Closure handling new api results
+	 */
+	public static function start(Closure $onRequest, $delay = 3600) {
+		// Set request delay
+		self::setRequestDelay($delay);
+
+		self::onRequest = $onRequest;
+		
+		// Set query params
+		TwitterAPICall::setQueryParams('en','recent', 100);
+
+		// make an array of all emojis
+		$emojis = self::getEmojiChars();
+
+		self::startService();
 	}
 
-	return $ret;
-}
 
 
-function startService() {
-	// Wait time between two API call in seconds
-	$WAIT_TIME = 0;
+	/* ---- SETTERS ---- */	
 
-	// make an array of all emojis
-	$emojis = getEmojiChars();
+	/* Set request delay, in seconds, waited between twitter API requests.
+  	 * @param: time in seconds 
+	 */
+	public static function setRequestDelay($seconds) { 
+		self::$REQUEST_DELAY = $seconds;
+	}
 
-	// Set query params
-	TwitterAPICall::setQueryParams('en','recent',100);
 
-	// lauch server
-	do {
-		// prepare an array for sorted tweets
-		$tweetsSortedByEmojis = array();
 
-		// establish connection to tweeter API
-		TwitterAPICall::connect();
+	/* ---- GETTERS ---- */
 
-		// get tweets from the API call
-		$tweets = (new TwitterAPICall())->getTweets();
-		
-		//filter out tweets with no emojis
-		foreach ($tweets as $t) {
+	/* Get Tweets grouped by Emoji
+	 * Returns a 2 dimentions array of tweets.
+	 * Columns keys are emojis, grouping tweets with one or more occurences of theses emojis
+	 * @return Array<String => Array<Tweet>>
+	 */
+	public static function getTweetsGroupedByEmoji() {
+		$ret = array();
+		foreach (self::$apiCall->getTweets() as $t) {
 			foreach ($emojis as $e) {
+				// checks if emoji is in tweet.
 				if (mb_stripos($t->text, $e, 0, "UTF-8")) {
-					if (isset($tweetsSortedByEmojis[$e])) {
-						array_push($tweetsSortedByEmojis[$e], $t);
-					} else {
-						$tweetsSortedByEmojis[$e] = [$t];
-					}
+					$ret[$e] = array_merge($ret[$e],array($t));
 				}
 			}
 		}
+		return $ret;
+	}
 
-		var_dump(array_keys($tweetsSortedByEmojis));
 
-		// wait...
-		$start = time();
-		while($start + $WAIT_TIME > time());
-	} while (false);
+
+	/* ---- PRIVATE METHODS ---- */
+
+	/* Get Emoji Characters:
+	 * Returns an array of every emojis character referenced in the databases.
+	 * Emojis can be a string of 2 or more characters long (ex: region codes).
+	 * @returns array<Strings>
+	 */
+	private static function getEmojiChars() {
+		require_once '../data/Emoji.class.php';
+		
+		return array_map(function($e) {
+			return $e->getEmoji();
+		}, Emoji::getAll());
+	}
+
+	
+	/* Send New Request:
+	 * Establish connection to the twitter API and sends a query.
+	 * Should not be called too often, API access is limited.
+	 * @changes self::$apiCall with new data.
+	 */
+	private static function newRequest() {
+		TwitterAPICall::connect();
+		self::$apiCall = new TwitterAPICall();
+	}
+
+
+	/* Start Service:
+	 * Starts the loop and calls a new request every so often
+	 * - Requests intervalls are set with setRequestDelay()
+	 * never @returns
+	 */
+	private static function startService() {
+		while (true) {
+			self::newRequest();
+			sleep(self::$REQUEST_DELAY);
+		}
+	}
+	
+
+
+	/* ---- CONSTRUCTOR ---- */
+	private function __construct() {};
 }
-
-startService();
-
