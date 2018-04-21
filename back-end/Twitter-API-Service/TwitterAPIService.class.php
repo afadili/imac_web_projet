@@ -31,7 +31,7 @@ class TwitterAPIService {
 	 * Defines request interval in seconds (default to 1hour)
 	 * @const Integer
 	 */
-	const REQUEST_DELAY = self::DEBUG ? 0 : 3600;
+	const REQUEST_DELAY = self::DEBUG ? 0 : 120;
 
 
 	
@@ -99,15 +99,6 @@ class TwitterAPIService {
 	private static $requestHandler;
 
 
-	/**
-	 * Data
-	 * Stores the last request data
-	 *
-	 * @var Object
-	 */
-	private static $data;
-
-
 	
 
 	/* --- METHODS --- */
@@ -139,8 +130,20 @@ class TwitterAPIService {
 		self::$requestHandler = $onRequest;
 
 		do {
-			self::newRequest();
-			self::$requestHandler->newRequestHandler(self::$data);
+			echo "[".date("Y-m-d H:i:s")."]\nSend new request to Twitter API...\n";
+			$data = self::newRequest();
+
+			echo "Parse data...\n";
+			self::$requestHandler->handle($data);
+
+			echo "Done!\n\n";
+			
+			// stream logs 
+			ob_end_flush(); 
+		    flush(); 
+		    if(ob_get_contents()) ob_flush();
+		    ob_start(); 
+
 			sleep(self::REQUEST_DELAY);
 		} while(!self::DEBUG);
 	}
@@ -161,7 +164,7 @@ class TwitterAPIService {
 			self::$accessTokenSecret
 		);
 		
-		self::$data = self::$connection->get(
+		return self::$connection->get(
 			"search/tweets", 
 			[
 				"q" => self::$REQUEST_SUBJECT, 
@@ -186,5 +189,5 @@ class TwitterAPIService {
  */
 
 interface TwitterDataHandler {
-	public function newRequestHandler($data);
+	public function handle($data);
 }

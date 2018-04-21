@@ -1,5 +1,5 @@
 <?php
-require_once "../data/Statistics.class.php";
+require_once "PDO/Statistics.class.php";
 
 class TweetSamples implements StatisticsData {
 	

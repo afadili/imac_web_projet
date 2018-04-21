@@ -1,7 +1,7 @@
 <?php 
-require_once "TwitterAPIService.class.php";
-require_once '../data/Emoji.class.php';
-
+require_once 'Twitter-API-Service/TwitterAPIService.emoji-tracker.include.php';
+require_once 'PDO/Emoji.class.php';
+require_once "TweetSamples.class.php";
 
 class TwitterDataParser implements TwitterDataHandler {
 
@@ -16,18 +16,19 @@ class TwitterDataParser implements TwitterDataHandler {
 		);
 	}
 
-	public function newRequestHandler($data) {
+	public function handle($data) {
 		// set data
 		$this->twitterData = $data;
 
-		require_once "TweetSamples.class.php";
-
+		echo "New data for:";
 		foreach (self::getTweetsGroupedByEmoji() as $emojiChar => $tweets) {
 			$stats = new TweetSamples($tweets);
 			$emoji = Emoji::createFromChar($emojiChar);
 
+			echo "$emojiChar";
 			Statistics::newDataPoint($stats, $emoji);
 		}
+		echo "\n";
 	}
 
 	/* ---- GETTERS ---- */
@@ -35,14 +36,6 @@ class TwitterDataParser implements TwitterDataHandler {
 	// @return array<Tweets>
 	private function getTweets() {
 		return $this->twitterData->statuses;
-	}
-
-	// @returns array<String> an array of Hashtags
-	private function getHashtags() {
-		return array_map(
-			$this->twitterData->entities->hashtags,
-			function($h) {return $h->text;}
-		);
 	}
 
 	/* Get Tweets grouped by Emoji
