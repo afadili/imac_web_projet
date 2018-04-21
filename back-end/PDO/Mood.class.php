@@ -1,42 +1,52 @@
 <?php
 require_once 'PDO/MyPDO//MyPDO.emoji-tracker.include.php'; 
 
-/* -------------------------------------------------
- * Mood CLASS
- *	> get id, name
- *	> get all
- *	> get from emoji
- * -------------------------------------------------
+/**
+ * MOOD CLASS
+ * Represent the 'Mood' table of the database
  */
-
 class Mood {
-	/* --- Attributes --- */
+	//// PROPERTIES
 
+	/**
+	 * @var Integer $id, id of the mood
+	 */
 	private $id = null;
+
+	/**
+	 * @var String $name, mood name
+	 */
 	private $name = null;
 
 
 
-	/* --- Basic Getters --- */
-	// get id
+	//// BASIC GETTERS
+	
+	/**
+	 * GET ID
+	 * @return Integer, id of the current Mood
+	 */
 	public function getId() { 
 		return $this->id; 
 	}
 
-	// get name
+	/**
+	 * GET NAME
+	 * @return String, name of the current Mood
+	 */
 	public function getName() {
 		return $this->name;
 	}
 
 
 
-	/* --- Complex Getters --- */
+	//// COMPLEX GETTERS
 
-	/* GET ALL MOODS
+	/** 
+	 * GET ALL MOODS
 	 * Grabs all the moods from the database
 	 * @return array<Mood>
 	 */
-
 	public static function getAll() {
 		$stmt = MyPDO::getInstance()->prepare("SELECT * FROM mood");
 		$stmt->execute();
@@ -44,13 +54,11 @@ class Mood {
 		if (($object = $stmt->fetchAll()) !== false)
 			return $object;
 		else
-			throw new Exception("Mood table does'nt exist? Hmmm...");
+			throw new Exception("Failed to access 'Mood' table.");
 	}
 
 
 
-	/* --- Constructor --- */
-	
 	// disable constructor
 	private function __construct() {}
 }
