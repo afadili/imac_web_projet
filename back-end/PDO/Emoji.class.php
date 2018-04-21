@@ -9,7 +9,7 @@ require_once "PDO/Mood.class.php";
 
 class Emoji {
 
-	//// ATTRIBUTES
+	//// PROPERTIES
 
 	/**
 	 * @var Integet $id, id of the emoji
@@ -90,7 +90,7 @@ class Emoji {
 	}
 
 
-	//// GETTERS
+	//// BASIC GETTERS
 
 	/**
 	 * Get id

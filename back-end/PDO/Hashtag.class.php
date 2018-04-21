@@ -106,7 +106,6 @@ class Hashtag {
 	}
 
 
-
 	/**
 	 * GET ALL HASHTAGS FROM EMOJI
 	 * returns a list of instances of Hashtags used with a given emoji
