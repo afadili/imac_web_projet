@@ -90,8 +90,15 @@ class TweetSamples implements StatisticsData {
 	 * @return Interger sum of all the replies of each tweet the sample
 	 */
 	public function totalResponseCount() {
-		// TODO
-		return 0; 
+		return array_sum(array_map( 
+			function($tweet) {
+				if (isset($tweet->reply_count))
+					return $tweet->reply_count;
+				else 
+					return 0;
+			},
+			$this->tweets
+		));
 	}
 
 
