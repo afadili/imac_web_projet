@@ -56,10 +56,7 @@ class Batch {
 		$stmt = MyPDO::getInstance()->prepare("SELECT * FROM batch ORDER BY 'date' DESC LIMIT 1");
 		$stmt->execute();
 		$stmt->setFetchMode(PDO::FETCH_CLASS, "Batch");
-		if (($object = $stmt->fetch()) !== false)
-			return $object;
-		else
-			throw new Exception("No extisting batchs");
+		return $object = $stmt->fetch();
 	}
 
 
@@ -74,8 +71,8 @@ class Batch {
 	public static function getActive() {
 		$lastBatch = self::getLast();
 
-		if ($lastBatch->date - time() < self::ACTIVE_BATCH_TTL) {
-			$stmt = MyPDO::getInstance()->prepare("INSERT INTO batch('date') VALUES CURRENT_TIMESTAMP");
+		if ($lastBatch === false || time() - (new DateTime($lastBatch->date))->getTimestamp() > self::ACTIVE_BATCH_TTL) {
+			$stmt = MyPDO::getInstance()->prepare("INSERT INTO batch(`date`) VALUES (CURRENT_TIMESTAMP)");
 			$stmt->execute();
 			$lastBatch = self::getLast();
 		}
