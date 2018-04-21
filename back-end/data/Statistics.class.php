@@ -166,40 +166,64 @@ class Statistics {
 			throw new Exception("Emoji id:$idEmoji or Hashtag id:$idHashtag does not exists.");
 	}
 
+	/* GET LATEST
+	 *
+	 */
+
+	private static function getLatest() {
+		$stmt = MyPDO::getInstance()->prepare("SELECT * FROM statistics WHERE id = LAST_INSERT_ID()");
+		$stmt->execute();
+		$stmt->setFetchMode(PDO::FETCH_CLASS, "Statistics");
+		if (($obj = $stmt->fetch()) !== false) {
+			return $obj;
+		} else {
+			throw new Exception("Failed to get last stat");
+		}
+	}
+
 
 	/* ---- SETTERS ---- */
 	/* !!! WARNING: SETTERS AND CONSTRUCTORS SHOULD NEVER BE CALLED BY ANY FRONT-END REQUESTS !!! */
-	public static function addStatistics(StatisticsData $data) {
+	
+	public static function newDataPoint(StatisticsData $data, Emoji $emoji, Hashtag $hashtag = null) {
+		$statistics = self::insertNew($data);
+
+		$query = "INSERT INTO relation(idStat, idEmoji ,idHashtag) VALUES (:stats, :emoji, :hashtag)";
+
+		$params = array(
+			":stats" => $statistics->getId(),
+			":emoji" => $emoji->getId(),
+			":hashtag" => isset($hashtag)? $hashtag->getId() : null
+		);
+
+		$stmt = MyPDO::getInstance()->prepare($query);
+		$stmt->execute($params);
+	}
+
+	private static function insertNew(StatisticsData $data) {
 		require_once "Batch.class.php";
 
 		// insert data and return the new entry
 		$query = "
 			INSERT INTO statistics(idBatch,  nbTweets,  avgRetweets,  avgFavorites,  avgResponses,  avgPopularity,  bestTweet)
 			VALUES(:batch,  :nbTweets, :avgRetweets, :avgFavorites, :avgResponses, :avgPopularity, :best);
-			SELECT * FROM statistics ORDER BY id DESC LIMIT 1;
 		";
 
 		// bind values
 		$params = array(
 			":batch" => Batch::getActive()->getId(),
-			":nbTweets" => $data->nbTweets,
-			":avgRetweets" => $data->avgRetweets,
-			":avgFavorites" => $data->avgFavorites,
-			":avgResponses" => $data->avgResponses,
-			":avgPopularity" => $data->avgPopularity,
-			":best" => $data->bestTweet
+			":nbTweets" => $data->count(),
+			":avgRetweets" => $data->avgRetweets(),
+			":avgFavorites" => $data->avgFavorites(),
+			":avgResponses" => $data->avgResponses(),
+			":avgPopularity" => $data->avgPopularity(),
+			":best" => $data->best()
 		);
 
 		$stmt = MyPDO::getInstance()->prepare($query);
 		$stmt->execute($params);
 
-		$stmt->setFetchMode(PDO::FETCH_CLASS, "Statistics");
-
-		if (($obj = $stmt->fetch()) !== false) {
-			return $obj;
-		} else {
-			throw new Exception("Failed to create stat");
-		}
+		return self::getLatest();
 	}
 
 	// disable constructor
@@ -207,10 +231,12 @@ class Statistics {
 }
 
 Interface StatisticsData {
-	public function nbTweets();
+	
+	public function count();
+	public function best();
+
 	public function avgRetweets();
 	public function avgFavorites();
 	public function avgResponses();
 	public function avgPopularity();
-	public function bestTweet();
 }
