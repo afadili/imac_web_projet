@@ -169,7 +169,7 @@ class Statistics {
 
 	/* ---- SETTERS ---- */
 	/* !!! WARNING: SETTERS AND CONSTRUCTORS SHOULD NEVER BE CALLED BY ANY FRONT-END REQUESTS !!! */
-	public static function addStatistics(array $data) {
+	public static function addStatistics(StatisticsData $data) {
 		require_once "Batch.class.php";
 
 		// insert data and return the new entry
@@ -180,15 +180,14 @@ class Statistics {
 		";
 
 		// bind values
-		// TODO : Interface getavgRetweet, fav etc...
 		$params = array(
 			":batch" => Batch::getActive()->getId(),
-			":nbTweets" => $data["nbTweets"],
-			":avgRetweets" => $data["avgRetweets"],
-			":avgFavorites" => $data["avgFavorites"],
-			":avgResponses" => $data["avgResponses"],
-			":avgPopularity" => $data["avgPopularity"],
-			":best" => $data["best"]
+			":nbTweets" => $data->nbTweets,
+			":avgRetweets" => $data->avgRetweets,
+			":avgFavorites" => $data->avgFavorites,
+			":avgResponses" => $data->avgResponses,
+			":avgPopularity" => $data->avgPopularity,
+			":best" => $data->bestTweet
 		);
 
 		$stmt = MyPDO::getInstance()->prepare($query);
@@ -205,5 +204,13 @@ class Statistics {
 
 	// disable constructor
 	private function __construct() {}
+}
 
+Interface StatisticsData {
+	public $nbTweets;
+	public $avgRetweets;
+	public $avgFavorites;
+	public $avgResponses;
+	public $avgPopularity;
+	public $bestTweet;
 }
