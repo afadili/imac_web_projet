@@ -1,11 +1,11 @@
 -- phpMyAdmin SQL Dump
--- version 4.6.6deb4
+-- version 4.6.5.2
 -- https://www.phpmyadmin.net/
 --
--- Host: localhost:3306
--- Generation Time: Apr 15, 2018 at 03:35 PM
--- Server version: 10.1.26-MariaDB-0+deb9u1
--- PHP Version: 7.0.27-0+deb9u1
+-- Host: localhost
+-- Generation Time: Apr 21, 2018 at 04:54 PM
+-- Server version: 10.1.21-MariaDB
+-- PHP Version: 5.6.30
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 SET time_zone = "+00:00";
@@ -17,7 +17,7 @@ SET time_zone = "+00:00";
 /*!40101 SET NAMES utf8mb4 */;
 
 --
--- Database: `emoji_tracker`
+-- Database: `emoji-tracker`
 --
 
 -- --------------------------------------------------------
@@ -28,7 +28,7 @@ SET time_zone = "+00:00";
 
 CREATE TABLE `batch` (
   `id` int(11) NOT NULL,
-  `date` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP
+  `date` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 -- --------------------------------------------------------
@@ -39,10 +39,10 @@ CREATE TABLE `batch` (
 
 CREATE TABLE `emoji` (
   `id` int(11) NOT NULL,
-  `emoji` varchar(128) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NOT NULL,
-  `name` varchar(128) DEFAULT NULL,
-  `shortName` varchar(128) DEFAULT NULL,
-  `ASCII` varchar(128) DEFAULT NULL,
+  `emoji` varchar(128) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_520_ci NOT NULL,
+  `name` varchar(128) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_520_ci DEFAULT NULL,
+  `shortName` varchar(128) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_520_ci DEFAULT NULL,
+  `ASCII` varchar(128) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_520_ci DEFAULT NULL,
   `code` varchar(128) CHARACTER SET utf8 COLLATE utf8_bin DEFAULT NULL,
   `idMood` int(11) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
@@ -1634,15 +1634,6 @@ CREATE TABLE `hashtag` (
   `word` varchar(280) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
---
--- Dumping data for table `hashtag`
---
-
-INSERT INTO `hashtag` (`id`, `word`) VALUES
-(1, 'happy'),
-(2, 'sad'),
-(3, 'angry');
-
 -- --------------------------------------------------------
 
 --
@@ -1653,6 +1644,169 @@ CREATE TABLE `mood` (
   `id` int(11) NOT NULL,
   `name` varchar(16) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Dumping data for table `mood`
+--
+
+INSERT INTO `mood` (`id`, `name`) VALUES
+(1, 'Accepted'),
+(2, 'Accomplished'),
+(3, 'Aggravated'),
+(4, 'Alone'),
+(5, 'Amused'),
+(6, 'Angry'),
+(7, 'Annoyed'),
+(8, 'Anxious'),
+(9, 'Ashamed'),
+(10, 'Awake'),
+(11, 'Bewildered'),
+(12, 'Bitchy'),
+(13, 'Blank'),
+(14, 'Blissful'),
+(15, 'Bored'),
+(16, 'Bouncy'),
+(17, 'Brooding'),
+(18, 'Calm'),
+(19, 'Cautious'),
+(20, 'Chaotic'),
+(21, 'Cheerful'),
+(22, 'Chilled'),
+(23, 'Chipper'),
+(24, 'Cold'),
+(25, 'Complacent'),
+(26, 'Complex'),
+(27, 'Confused'),
+(28, 'Contemplative'),
+(29, 'Content'),
+(30, 'Cranky'),
+(31, 'Crappy'),
+(32, 'Crazy'),
+(33, 'Curious'),
+(34, 'Cynical'),
+(35, 'Dark'),
+(36, 'Defensive'),
+(37, 'Delusional'),
+(38, 'Demented'),
+(39, 'Depressed'),
+(40, 'Determined'),
+(41, 'Devious'),
+(42, 'Dirty'),
+(43, 'Disappointed'),
+(44, 'Discontent'),
+(45, 'Ditzy'),
+(46, 'Dorky'),
+(47, 'Drained'),
+(48, 'Drunk'),
+(49, 'Ecstatic'),
+(50, 'Empathetic'),
+(51, 'Energetic'),
+(52, 'Enraged'),
+(53, ' Enthralled'),
+(54, 'Envious'),
+(55, 'Excited'),
+(56, 'Exhausted'),
+(57, 'Fearful'),
+(58, 'Flirty'),
+(59, 'Forceful'),
+(60, 'Forgetful'),
+(61, 'Frustrated'),
+(62, 'Geeky'),
+(63, 'Gentle'),
+(64, 'Giddy'),
+(65, 'Giggly'),
+(66, 'Gloomy'),
+(67, 'Good'),
+(68, 'Grateful'),
+(69, 'Grumpy'),
+(70, 'Guilty'),
+(71, 'Happy'),
+(72, 'Heartbroken'),
+(73, 'High'),
+(74, 'Holy'),
+(75, 'Hopeful'),
+(76, 'Horny'),
+(77, 'Hot'),
+(78, 'Humane'),
+(79, 'Hungry'),
+(80, 'Hyper'),
+(81, 'Impatient'),
+(82, 'Impressed'),
+(83, 'Indescribable'),
+(84, 'Indifferent'),
+(85, 'Infuriated'),
+(86, 'Intense'),
+(87, 'Irate'),
+(88, 'Irritated'),
+(89, 'Jealous'),
+(90, 'Joyful'),
+(91, 'Jubilant'),
+(92, 'Lawful'),
+(93, 'Lazy'),
+(94, 'Lethargic'),
+(95, 'Listless'),
+(96, 'Lively'),
+(97, 'Lonely'),
+(98, 'Lost'),
+(99, 'Loved'),
+(100, 'Loving'),
+(101, 'Mad'),
+(102, 'Melancholy'),
+(103, 'Mischievous'),
+(104, 'Moody'),
+(105, 'Morbid'),
+(106, 'Morose'),
+(107, 'Naughty'),
+(108, 'Nerdy'),
+(109, 'Numb'),
+(110, 'Okay'),
+(111, 'Optimistic'),
+(112, 'Paranoid'),
+(113, 'Passionate'),
+(114, 'Patient'),
+(115, 'Peaceful'),
+(116, 'Perplexed'),
+(117, 'Pessimistic'),
+(118, 'Pissed of'),
+(119, 'Pleased'),
+(120, 'Predatory'),
+(121, 'Psychotic'),
+(122, 'Puny'),
+(123, 'Quixotic'),
+(124, 'Rapturous'),
+(125, 'Rebellious'),
+(126, 'Refreshed'),
+(127, 'Rejected'),
+(128, 'Relaxed'),
+(129, 'Relieved'),
+(130, 'Restless'),
+(131, 'Restricted'),
+(132, 'Rushed'),
+(133, 'Sacred'),
+(134, 'Sad'),
+(135, 'Satisfied'),
+(136, 'Scared'),
+(137, 'Scatterbrained'),
+(138, 'Shattered'),
+(139, 'Shocked'),
+(140, 'Sick'),
+(141, 'Silly'),
+(142, 'Sleepy'),
+(143, 'Smart'),
+(144, 'Sorry'),
+(145, 'Srange'),
+(146, 'Stressed'),
+(147, 'Surprised'),
+(148, 'Sympathetic'),
+(149, 'Thankful'),
+(150, 'Thoughtful'),
+(151, 'Tired'),
+(152, 'Touched'),
+(153, 'Uncomfortable'),
+(154, 'Unwanted'),
+(155, 'Weird'),
+(156, 'Wistful'),
+(157, 'Worthless');
 
 -- --------------------------------------------------------
 
@@ -1669,19 +1823,19 @@ CREATE TABLE `relation` (
 -- --------------------------------------------------------
 
 --
--- Table structure for table `statistiques`
+-- Table structure for table `statistics`
 --
 
-CREATE TABLE `statistiques` (
+CREATE TABLE `statistics` (
   `id` int(11) NOT NULL,
   `idBatch` int(11) NOT NULL,
   `nbTweets` int(11) NOT NULL,
   `avgRetweets` float NOT NULL,
-  `avgFavorite` float NOT NULL,
+  `avgFavorites` float NOT NULL,
   `avgResponses` float NOT NULL,
   `avgPopularity` float NOT NULL,
   `bestTweet` varchar(128) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 ROW_FORMAT=COMPACT;
 
 --
 -- Indexes for dumped tables
@@ -1721,9 +1875,9 @@ ALTER TABLE `relation`
   ADD KEY `idStat` (`idStat`);
 
 --
--- Indexes for table `statistiques`
+-- Indexes for table `statistics`
 --
-ALTER TABLE `statistiques`
+ALTER TABLE `statistics`
   ADD PRIMARY KEY (`id`),
   ADD KEY `idBatch` (`idBatch`);
 
@@ -1745,16 +1899,16 @@ ALTER TABLE `emoji`
 -- AUTO_INCREMENT for table `hashtag`
 --
 ALTER TABLE `hashtag`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 --
 -- AUTO_INCREMENT for table `mood`
 --
 ALTER TABLE `mood`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=158;
 --
--- AUTO_INCREMENT for table `statistiques`
+-- AUTO_INCREMENT for table `statistics`
 --
-ALTER TABLE `statistiques`
+ALTER TABLE `statistics`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 --
 -- Constraints for dumped tables
@@ -1771,14 +1925,14 @@ ALTER TABLE `emoji`
 --
 ALTER TABLE `relation`
   ADD CONSTRAINT `relation_ibfk_1` FOREIGN KEY (`idHashtag`) REFERENCES `hashtag` (`id`),
-  ADD CONSTRAINT `relation_ibfk_2` FOREIGN KEY (`idStat`) REFERENCES `statistiques` (`id`),
+  ADD CONSTRAINT `relation_ibfk_2` FOREIGN KEY (`idStat`) REFERENCES `statistics` (`id`),
   ADD CONSTRAINT `relation_ibfk_3` FOREIGN KEY (`idEmoji`) REFERENCES `emoji` (`id`);
 
 --
--- Constraints for table `statistiques`
+-- Constraints for table `statistics`
 --
-ALTER TABLE `statistiques`
-  ADD CONSTRAINT `statistiques_ibfk_1` FOREIGN KEY (`idBatch`) REFERENCES `batch` (`id`);
+ALTER TABLE `statistics`
+  ADD CONSTRAINT `statistics_ibfk_1` FOREIGN KEY (`idBatch`) REFERENCES `batch` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
