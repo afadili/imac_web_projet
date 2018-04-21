@@ -19,6 +19,15 @@ class TwitterDataParser implements TwitterDataHandler {
 	public function newRequestHandler($data) {
 		// set data
 		$this->twitterData = $data;
+
+		require_once "TweetSamples.class.php";
+
+		foreach (self::getTweetsGroupedByEmoji() as $emojiChar => $tweets) {
+			$data = new TweetSamples($tweets);
+			$emoji = Emoji::createFromChar($emojiChar);
+
+			Statistics::newDataPoint($data, $emoji);
+		}
 	}
 
 	/* ---- GETTERS ---- */
@@ -47,46 +56,15 @@ class TwitterDataParser implements TwitterDataHandler {
 		foreach ($this->twitterData->statuses as $tweet) {
 			foreach ($this->emojiList as $emojiChar) {
 				// checks if emoji is in tweet.
-				if (mb_stripos($tweet->text, $e, 0, "UTF-8")) {
-					$ret[$emojiChar] = array_merge($ret[$emojiChar],array($tweet));
+				if (mb_stripos($tweet->text, $emojiChar, 0, "UTF-8")) {
+						if (isset($ret[$emojiChar]))
+							array_push($ret[$emojiChar], $tweet);
+						else 
+							$ret[$emojiChar] = array($tweet);
 				}
 			}
 		}
 
 		return $ret;
-	}
-
-
-	// @returns integer the number of tweets retrieved
-	private function getTweetCount() {
-		return count($this->twitterData->statuses);
-	}
-
-
-	// @returns integer the total number of retweet through all tweets
-	private function getTotalRetweetsCount() {
-		return array_sum(array_map(
-			$this->twitterData->statuses, 
-			function($t) {return $t->retweet_count;}
-		));
-	}
-
-	// @returns integer the total number of favorites through all tweets
-	private function getTotalFavoriteCount() {
-		return array_sum(array_map(
-			$this->twitterData->statuses, 
-			function($t) {return $t->favorite_count;}
-		));
-	}
-
-
-	// @return float average of retweets per tweet
-	private function getAverageRetweetsCount() {
-		return $this->getTotalRetweetsCount() / $this->getTweetCount();
-	}
-
-	// @return float average of Favorite per tweet
-	private function getAverageFavoriteCount() {
-		return $this->getTotalFavoriteCount() / $this->getTweetCount();
 	}
 }
