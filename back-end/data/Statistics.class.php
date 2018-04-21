@@ -207,10 +207,10 @@ class Statistics {
 }
 
 Interface StatisticsData {
-	public $nbTweets;
-	public $avgRetweets;
-	public $avgFavorites;
-	public $avgResponses;
-	public $avgPopularity;
-	public $bestTweet;
+	public function nbTweets();
+	public function avgRetweets();
+	public function avgFavorites();
+	public function avgResponses();
+	public function avgPopularity();
+	public function bestTweet();
 }
