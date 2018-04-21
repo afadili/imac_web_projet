@@ -52,6 +52,7 @@ class TweetSamples implements StatisticsData {
 				$max = $tweet->retweet_count;
 			}
 		}
+
 		return "https://www.twitter.com/statuses/{$best->id}";
 	}
 
@@ -67,7 +68,12 @@ class TweetSamples implements StatisticsData {
 	public function totalRetweetCount() {
 
 		return array_sum(array_map( 
-			function($tweet) {return $tweet->retweet_count;},
+			function($tweet) {
+				if (isset($tweet->retweet_count))
+					return $tweet->retweet_count;
+				else 
+					return 0;
+			},
 			$this->tweets
 		));
 	}
@@ -79,7 +85,12 @@ class TweetSamples implements StatisticsData {
 	 */
 	public function totalFavoriteCount() {
 		return array_sum(array_map( 
-			function($tweet) {return $tweet->favorite_count;},
+			function($tweet) {
+				if (isset($tweet->favorite_count))
+					return $tweet->favorite_count;
+				else 
+					return 0;
+			},
 			$this->tweets
 		));
 	}
@@ -137,6 +148,6 @@ class TweetSamples implements StatisticsData {
 	 * @return Float average popularity of a tweet in the sample
 	 */
 	public function avgPopularity() {
-		return $this->avgResponses() * $this->avgFavorites();;
+		return $this->avgResponses() + $this->avgFavorites() + $this->avgResponses();
 	}
 }
