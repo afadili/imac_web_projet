@@ -1,29 +1,65 @@
 <?php
-require_once 'PDO/MyPDO//MyPDO.emoji-tracker.include.php'; 
+require_once 'PDO/MyPDO/MyPDO.emoji-tracker.include.php'; 
+require_once "PDO/Mood.class.php";
 
-/* -------------------------------------------------
+/**
  * EMOJI CLASS
- *  > get id, emoji character, name, shortname, 
- *    utf code, ascii representation
- * 	> get all
- *	> get from mood
- *	> get from hashtag
- * -------------------------------------------------
+ * Represent the 'emoji‘ table of the database
  */
 
 class Emoji {
 
-	/* --- Attributes --- */
+	//// ATTRIBUTES
 
+	/**
+	 * @var Integet $id, id of the emoji
+	 */
 	private $id = null;
+
+	/**
+	 * @var String $emoji, contains the emoji
+	 * Emojis can be more than one character:
+	 * For instance country flags are a pair of 'letters' for each ISO country codes.
+	 */
 	private $emoji = null;
+
+	/**
+	 * @var String $name, emoji description
+	 */
 	private $name = null;
+
+	/**
+	 * @var String $shortname, emoji short descrption (used in programs like Discord)
+	 * Example: ':ok_hand:' -> 👌
+	 */
 	private $shortname = null;
+
+	/**
+	 * @var String $code, Unicode id (ex: U+1F320)
+	 */
 	private $code = null;
+
+	/**
+	 * @var String $ascii, ascii representation, for smileys (ex: ':-)')
+	 * NULL if doesn't exists
+	 */
 	private $ascii = null;
 
+	/**
+	 * @var Integer $idMood, id of the corresponding mood, (defaults to NULL)
+	 */
+	private $idMood = null;
 
-	// create from emoji character
+
+
+
+	//// FACTORIES
+
+	/**
+	 * Create Emoji From Char
+	 * @param String $char, short string containing one emoji.
+	 * @return Emoji instance
+	 */
 	public static function createFromChar($char) {
 		$stmt = MyPDO::getInstance()->prepare("SELECT * FROM emoji WHERE emoji = ?");
 		$stmt->bindValue(1, $char);
@@ -32,10 +68,16 @@ class Emoji {
 		if (($object = $stmt->fetch()) !== false)
 			return $object;
 		else
-			throw new Exception("\$char is not a referenced emoji.");
+			throw new Exception("\$char: '$char' is not a referenced emoji.");
 	}
 
-	// create from id
+
+	
+	/**
+	 * Create Emoji From ID
+	 * @param Integer $id, id of the emoji in db table
+	 * @return Emoji instance
+	 */
 	public static function createFromId($id) {
 		$stmt = MyPDO::getInstance()->prepare("SELECT * FROM emoji WHERE id = ?");
 		$stmt->bindValue(1, $id);
@@ -48,47 +90,65 @@ class Emoji {
 	}
 
 
-	/* --- Basic getters --- */
+	//// GETTERS
 
-	// get $id
+	/**
+	 * Get id
+	 * @return Integer, id of instance
+	 */
 	public function getId() { 
 		return $this->id; 
 	}
 
-	// get $emoji
+	/**
+	 * Get emoji
+	 * @return String, emoji of instance
+	 */
 	public function getEmoji() { 
 		return $this->emoji; 
 	}
 
-	// get $name
+	/**
+	 * Get name
+	 * @return String, name of instance
+	 */
 	public function getName() { 
 		return $this->name; 
 	}
 
-	// get $shortname
+	/**
+	 * Get shortname
+	 * @return String, shortname of instance
+	 */
 	public function getShortname() { 
 		return $this->shortname; 
 	}
 
-	// get $code
+	/**
+	 * Get code
+	 * @return String, unicode id of instance
+	 */
 	public function getCode() { 
 		return $this->code; 
 	}
 
-	// get $ascii
+	/**
+	 * Get ascii
+	 * @return String, ASCII representation of instance
+	 */
 	public function getAscii() { 
 		return $this->ascii; 
 	}
 
 
 
-	/* --- Complex getters --- */
+	//// COMPLEX GETTERS
 
-	/* GET ALL EMOJIS
+	/**
+	 * GET ALL EMOJIS
 	 * Grabs all the emojis from the database
 	 * @return array<Emoji>
 	 */
-
 	public static function getAll() {
 		$stmt = MyPDO::getInstance()->prepare("SELECT * FROM emoji");
 		$stmt->execute();
@@ -96,37 +156,31 @@ class Emoji {
 		if (($object = $stmt->fetchAll()) !== false)
 			return $object;
 		else
-			throw new Exception("Emoji table does'nt exist? Hmmm...");
+			throw new Exception("Failed to access Emoji table.");
 	}
 
 
 
-
-	/* GET MOOD
-	 * @return instance of Mood
+	/**
+	 * GET MOOD
+	 * @return Mood Instance, Mood attached to the emoji
+	 * @return Boolean false, if emoji as no mood
 	 */
-
 	public function getMood() {
-		require_once "Mood.class.php";
-
 		$stmt = MyPDO::getInstance()->prepare("SELECT * FROM mood WHERE id = ?");
 		$stmt->execute(array($this->idMood));
 		$stmt->setFetchMode(PDO::FETCH_CLASS, "Mood");
-		
-		if (($object = $stmt->fetch()) !== false)
-			return $object;
-		else
-			throw new Exception("Emoji $this->shortname has no mood");
+		return $stmt->fetch();
 	}
 
 	
 
-	/* GET ALL EMOJIS FROM MOOD
-	 * Select emojis from a given mood.
-	 * @param int idMood
-	 * @return array<Emoji>
+	/**
+	 * GET ALL EMOJIS FROM MOOD
+	 * Select emojis matching a given mood.
+	 * @param Integer $idMood, mood id.
+	 * @return array<Emoji>, Array of instances of Emoji.
 	 */
-
 	public static function getFromMood($idMood) {
 		$query = "
 			SELECT * FROM emoji 
@@ -145,10 +199,11 @@ class Emoji {
 
 
 
-	/* GET ALL EMOJIS FROM HASHTAG
-	 * return a list of instances of Emoji used with a given Hashtag
-	 * @params idHashtag, integer id of the used hashtag
-	 * @return array<Emoji> list of instances of emoji
+	/**
+	 * GET ALL EMOJIS FROM HASHTAG
+	 * creates a list of instances of Emoji used with a given Hashtag
+	 * @param Integer $idHashtag, id of the used hashtag
+	 * @return array<Emoji>, Array of instances of Emoji
 	 */
 	public static function getFromHashtag($idHashtag) {
 		$query = "
@@ -166,10 +221,7 @@ class Emoji {
 			throw new Exception("Hashtag id:$idHashtag does not exists.");
 	}
 
-	
 
-
-	/* --- Constructor --- */
 	
 	// disable constructor
 	private function __construct() {}
