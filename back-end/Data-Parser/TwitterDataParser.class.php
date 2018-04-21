@@ -1,22 +1,48 @@
 <?php 
+// include Twitter API Service
 require_once 'Twitter-API-Service/TwitterAPIService.emoji-tracker.include.php';
-require_once 'PDO/Emoji.class.php';
-require_once 'PDO/Hashtag.class.php';
 require_once "TweetSamples.class.php";
 
+// include PDO
+require_once 'PDO/Emoji.class.php';
+require_once 'PDO/Hashtag.class.php';
+
+
+/**
+ * TWITTER DATA PARSER CLASS
+ * -------------------------
+ * Implements the TwitterDataHandler interface
+ * Handles incomming data from recurrent Twitter API Service calls.
+ * Calls PDO methods to insert new data into the database
+ */
 class TwitterDataParser implements TwitterDataHandler {
 
+	//// PROPERTIES
+
+	/**
+	 * @var Object $twitterData, Stores new data recieved by Twitter Service.
+	 */
 	private $twitterData = null;
+
+	/**
+	 * @var Array<String> Array of all the emoji characters referenced in the database.
+	 */
 	private $emojiList = null;
 
-	public function __construct() {
-		// get a list of every emoji character
-		$this->emojiList = array_map(
-			function($e) { return $e->getEmoji(); }, 
-			Emoji::getAll()
-		);
-	}
 
+
+	//// HANDLER
+
+	/**
+	 * HANDLE NEW DATA
+	 * Handler called by the Twitter Service
+	 * execute the main job of this class:
+	 * - Sort tweets by Emoji and Hashtag
+	 * - Create Statistics from tweets groups
+	 * - Send statistics to PDO to be inserted into the database
+	 *
+	 * @param Object $data, data to parse
+	 */
 	public function handle($data) {
 		// set data
 		$this->twitterData = $data;
@@ -44,14 +70,13 @@ class TwitterDataParser implements TwitterDataHandler {
 		echo "\n$logs\n";
 	}
 
-	/* ---- GETTERS ---- */
 
-	// @return array<Tweets>
-	private function getTweets() {
-		return $this->twitterData->statuses;
-	}
 
-	/* Get Tweets grouped by Emoji
+
+	//// GETTERS
+
+	/**
+	 * GET TWEETS GROUPED BY EMOJI 
 	 * Returns a 2 dimentions array of tweets.
 	 * Columns keys are emojis, grouping tweets with one or more occurences of theses emojis
 	 * @return Array<String: Array<Tweet>>
@@ -74,11 +99,12 @@ class TwitterDataParser implements TwitterDataHandler {
 		return $ret;
 	}
 
-	/* Get Tweets grouped by Emoji and Hashtag
+
+	/**
+	 * GET TWEETS GROUPED BY EMOJI AND HASHTAG
 	 * Returns a 3 dimentions array of tweets.
 	 * Tweets are grouped by hashtags, hashtags are grouped by emojis
 	 * It's absolutely disgusting code.
-	 *
 	 * @return Array<String: Array<String: Array<Tweet>>>
 	 */
 	private function getTweetsGroupedByHashtagAndEmoji() {
@@ -99,4 +125,22 @@ class TwitterDataParser implements TwitterDataHandler {
 
 		return $ret;
 	}
+
+
+	
+	//// CONSTRUCTOR
+
+	/**
+	 * NEW TWITTER DATA PARSER
+	 * Class constructor
+	 * Initialise $emojiList
+	 */
+	public function __construct() {
+		// get a list of every emoji character
+		$this->emojiList = array_map(
+			function($e) { return $e->getEmoji(); }, 
+			Emoji::getAll()
+		);
+	}
+	
 }
