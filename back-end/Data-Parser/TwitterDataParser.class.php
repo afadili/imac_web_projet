@@ -23,10 +23,10 @@ class TwitterDataParser implements TwitterDataHandler {
 		require_once "TweetSamples.class.php";
 
 		foreach (self::getTweetsGroupedByEmoji() as $emojiChar => $tweets) {
-			$data = new TweetSamples($tweets);
+			$stats = new TweetSamples($tweets);
 			$emoji = Emoji::createFromChar($emojiChar);
 
-			Statistics::newDataPoint($data, $emoji);
+			Statistics::newDataPoint($stats, $emoji);
 		}
 	}
 
