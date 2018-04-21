@@ -35,7 +35,7 @@ class TwitterDataParser implements TwitterDataHandler {
 			foreach ($hashs as $hash => $tweets) {
 				$stats = new TweetSamples($tweets);
 				$emoji = Emoji::createFromChar($emojiChar);
-				$hashtag = Hashtag::sudoCreateFromWord($hash);
+				$hashtag = Hashtag::sudoCreateFromWord($hash); // if does not exist, force 
 
 				$logs .= "#$hash ";
 				Statistics::newDataPoint($stats, $emoji, $hashtag);
