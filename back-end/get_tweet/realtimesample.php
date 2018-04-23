@@ -49,6 +49,7 @@ $header = 'Authorization: OAuth ' . implode(', ', $items);
 class Handler {
     function handle($toto,$data) {
         var_dump(json_decode($data));
+        return strlen($data);
     }
 }
 
@@ -59,13 +60,11 @@ curl_setopt_array($ch, array(
     CURLOPT_HTTPHEADER     => array($header),
     CURLOPT_ENCODING       => 'gzip',
     CURLOPT_TIMEOUT        => 0,
-    CURLOPT_RETURNTRANSFER => false,
+    CURLOPT_RETURNTRANSFER => true,
     CURLOPT_WRITEFUNCTION => array('Handler','handle')
 ));
 
-while(true){
 $response = curl_exec($ch);
-sleep(3);
-}
+
 curl_close($ch);
 ?>
