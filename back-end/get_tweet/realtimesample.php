@@ -9,7 +9,9 @@
 */
 
 $url = 'https://stream.twitter.com/1.1/statuses/sample.json';
+
 $method = 'GET';
+
 
 $oauth_params = array(
     'oauth_consumer_key' => 'Z0arj4wYR0TlRIcpdy4tdAvIR',
@@ -20,25 +22,35 @@ $oauth_params = array(
     'oauth_version' => '1.0a',
 );
 
+// trie la reqête
 $base = $oauth_params;
-$key = array('3px8MvckKG4TpaOuUysLK4j4mndgpvsfoXHxQeG3ZjfBwK3YDR','uaMveJiLbGvN4TKIBp1UdNVdyTYJS8Iabh0CMs3CZnLuY');
 uksort($base, 'strnatcmp');
 
-$oauth_params['oauth_signature'] = base64_encode(hash_hmac(
-    'sha1',
-    implode('&', array_map('rawurlencode', [
-        'GET',
-        $url,
-        http_build_query($base, '', '&', PHP_QUERY_RFC3986)
-    ])),
-    implode('&', array_map('rawurlencode', $key)),
-    true
-));
+// construit et encode la requête
+$queryURL = http_build_query($base, '', '&', PHP_QUERY_RFC3986);
+$encodedQuery = implode('&', array_map('rawurlencode', [$method, $url, $queryURL]));
+
+// encode les clés d'API
+$keys = array('3px8MvckKG4TpaOuUysLK4j4mndgpvsfoXHxQeG3ZjfBwK3YDR','uaMveJiLbGvN4TKIBp1UdNVdyTYJS8Iabh0CMs3CZnLuY');
+$encodedAuthKeys = implode('&', array_map('rawurlencode', $keys));
+
+// signe les paramètres d'authentification avec les clé et url précédament encodée
+$oauth_params['oauth_signature'] = base64_encode(hash_hmac('sha1', $encodedQuery, $encodedAuthKeys, true));
+
+// encode les paramètres d'authentification
 foreach ($oauth_params as $name => $value) {
     $items[] = sprintf('%s="%s"', urlencode($name), urlencode($value));
 }
+
 $header = 'Authorization: OAuth ' . implode(', ', $items);
-//var_dump($header);
+
+
+/* END: AUTHENTIFICATION */
+class Handler {
+    function handle($toto,$data) {
+        var_dump(json_decode($data));
+    }
+}
 
 $ch = curl_init();
 curl_setopt_array($ch, array(
@@ -48,14 +60,12 @@ curl_setopt_array($ch, array(
     CURLOPT_ENCODING       => 'gzip',
     CURLOPT_TIMEOUT        => 0,
     CURLOPT_RETURNTRANSFER => false,
+    CURLOPT_WRITEFUNCTION => array('Handler','handle')
 ));
 
-
+while(true){
 $response = curl_exec($ch);
+sleep(3);
+}
 curl_close($ch);
-var_dump($response);
-
-
-
-
 ?>
