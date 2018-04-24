@@ -1,12 +1,5 @@
 <?php
 
-/** 
- * TwitterOAuth library:
- */
-require 'twitter/autoload.php';
-use Abraham\TwitterOAuth\TwitterOAuth;
-
-
 /**
  * TWITTER API SERVICE
  * -------------------
