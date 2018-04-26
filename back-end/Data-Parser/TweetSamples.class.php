@@ -2,7 +2,7 @@
 require_once "PDO/Statistics.class.php";
 
 /**
- * TweetSamples Class
+ * TWEET SAMPLES CLASS
  * -----------------------------------
  * implements StatisticsData interface
  * Set of functions to analyse a set of tweets.
@@ -10,26 +10,17 @@ require_once "PDO/Statistics.class.php";
 
 class TweetSamples implements StatisticsData {
 	
+	//// PROPERTIES
+
 	/**
 	 * @var array<Tweets>, statistic samples to analyse
 	 */
 	private $tweets;
 
 
-	/**
-	 * Constructor
-	 * @param array<Tweets>
-	 * Array is expected to not be empty
-	 */
-	public function __construct(array $tweets) {
-		$this->tweets = $tweets;
-
-		if (self::count() <= 0)
-			throw new Error("Empty array of tweets");
-	}
-
-
 	
+	//// GETTERS
+
 	/**
 	 * Count
 	 * @return Integer size of the sample of tweets
@@ -57,9 +48,7 @@ class TweetSamples implements StatisticsData {
 	}
 
 
-
-	/* ---- TOTALS ---- */
-
+	// TOTALS
 
 	/**
 	 * Total Retweet Count
@@ -113,9 +102,7 @@ class TweetSamples implements StatisticsData {
 	}
 
 
-
-	/* ---- AVERAGES ---- */
-
+	// AVERAGES
 
 	/**
 	 * Average Retweets
@@ -149,5 +136,21 @@ class TweetSamples implements StatisticsData {
 	 */
 	public function avgPopularity() {
 		return $this->avgResponses() + $this->avgFavorites() + $this->avgResponses();
+	}
+
+
+
+	//// CONSTRUCTOR
+
+	/**
+	 * Constructor
+	 * @param array<Tweets>
+	 * Array is expected to not be empty
+	 */
+	public function __construct(array $tweets) {
+		$this->tweets = $tweets;
+
+		if (self::count() <= 0)
+			throw new Error("Empty array of tweets");
 	}
 }
