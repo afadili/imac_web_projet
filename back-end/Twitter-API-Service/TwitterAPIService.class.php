@@ -1,12 +1,5 @@
 <?php
 
-/** 
- * TwitterOAuth library:
- */
-require 'twitter/autoload.php';
-use Abraham\TwitterOAuth\TwitterOAuth;
-
-
 /**
  * TWITTER API SERVICE
  * -------------------
@@ -33,29 +26,24 @@ class TwitterAPIService {
 	 */
 	const REQUEST_DELAY = self::DEBUG ? 0 : 120;
 
+	/**
+	 * Target url for api requests
+	 * @const String URL
+	 */
+	const TARGET_URL = 'https://stream.twitter.com/1.1/statuses/sample.json';
 
+	/**
+	 * Signature method for OAuth 
+	 * @const String OAUTH_SIGN_METHOD
+	 */
+	const OAUTH_SIGN_METHOD = 'HMAC-SHA1';
+
+	/**
+	 * Auth version used
+	 * @const String OAUTH_VERSION
+	 */
+	const OAUTH_VERSION = '1.0a';
 	
-	/* REQUEST PARAMETERS */
-
-	/**
-	 * @var String Keyword searched 
-	 */
-	private static $REQUEST_SUBJECT = 'e';
-
-	/**
-	 * @var String Language code (default: english)
-	 */
-	private static $REQUEST_LANGUAGE_CODE = 'en';
-
-	/**
-	 * @var String Result sorting method (default: recent)
-	 */
-	private static $REQUEST_RESULT_TYPE = 'recent';
-
-	/**
-	 * @var Integer Result count (maximum: 100)
-	 */
-	private static $REQUEST_RETULTS_COUNT = 100;
 
 
 	
@@ -81,12 +69,12 @@ class TwitterAPIService {
 
 	
 	/**
-	 * API connection
-	 * TODO: document this thing 
-	 *
+	 * HTTP Request Header
+	 * Sent to twitter to request information
+	 * Contains information for OAuth
 	 * @var Object 
 	 */
-	private static $connection;
+	private static $HTTPRequestHeader;
 
 
 	/**
@@ -127,53 +115,65 @@ class TwitterAPIService {
 	 * @param TwitteerDataHandler $onRequest
 	 */
 	public static function start(TwitterDataHandler $onRequest) {
-		self::$requestHandler = $onRequest;
+		self::generateRequestHeader();
 
-		do {
-			echo "[".date("Y-m-d H:i:s")."]\nSend new request to Twitter API...\n";
-			$data = self::newRequest();
+		$ch = curl_init();
+		curl_setopt_array($ch, array(
+		    CURLOPT_URL            => self::TARGET_URL,
+		    CURLOPT_SSL_VERIFYPEER => false,
+		    CURLOPT_HTTPHEADER     => self::$HTTPRequestHeader,
+		    CURLOPT_ENCODING       => 'gzip',
+		    CURLOPT_TIMEOUT        => 0,
+		    CURLOPT_RETURNTRANSFER => true,
+		    CURLOPT_WRITEFUNCTION => array($onRequest, 'handle')
+		));
 
-			echo "Parse data...\n";
-			self::$requestHandler->handle($data);
+		$response = curl_exec($ch);
 
-			echo "Done!\n\n";
-			
-			// stream logs 
-			ob_end_flush(); 
-		    flush(); 
-		    if(ob_get_contents()) ob_flush();
-		    ob_start(); 
-
-			sleep(self::REQUEST_DELAY);
-		} while(!self::DEBUG);
+		curl_close($ch);
 	}
 
 
-	/** 
-	 * Send New Request:
-	 * Establish connection to the twitter API and sends a query.
-	 * Should not be called too often, API access is limited.
-	 *
-	 * @changes self::$apiCall with new data.
+	/**
+	 * Generate HTTP Request Header
+	 * Prepare a header valid for Twitter API Authentification (OAuth)
 	 */
-	private static function newRequest() {
-		self::$connection = new TwitterOAuth(
-			self::$apiKey, 
-			self::$apiSecret, 
-			self::$accessToken, 
-			self::$accessTokenSecret
+	private static function generateRequestHeader() {
+		$method = 'GET';
+
+		$oauth_params = array(
+		    'oauth_consumer_key' => self::$apiKey,
+		    'oauth_token' =>self::$accessToken,
+			'oauth_nonce' => microtime(),
+		    'oauth_timestamp' => time(),
+		    'oauth_signature_method' => self::OAUTH_SIGN_METHOD,
+		    'oauth_version' => self::OAUTH_VERSION
 		);
-		
-		return self::$connection->get(
-			"search/tweets", 
-			[
-				"q" => self::$REQUEST_SUBJECT, 
-				"lang" => self::$REQUEST_LANGUAGE_CODE, 
-				"result_type" => self::$REQUEST_RESULT_TYPE, 
-				"count" => self::$REQUEST_RETULTS_COUNT
-			]
-		);
+
+		// sort oauth parameters
+		$base = $oauth_params;
+		uksort($base, 'strnatcmp');
+
+		// build and encode request
+		$queryURL = http_build_query($base, '', '&', PHP_QUERY_RFC3986);
+		$encodedQuery = implode('&', array_map('rawurlencode', [$method, self::TARGET_URL, $queryURL]));
+
+		// encode API private Keys
+		$keys = array(self::$apiSecret, self::$accessTokenSecret);
+		$encodedAuthKeys = implode('&', array_map('rawurlencode', $keys));
+
+		// sign auth params and keys
+		$oauth_params['oauth_signature'] = base64_encode(hash_hmac('sha1', $encodedQuery, $encodedAuthKeys, true));
+
+		// encode all the things
+		foreach ($oauth_params as $name => $value) {
+		    $items[] = sprintf('%s="%s"', urlencode($name), urlencode($value));
+		}
+
+		// return header
+		self::$HTTPRequestHeader = array('Authorization: OAuth ' . implode(', ', $items));
 	}
+
 
 
 	// privatise constructor
@@ -189,5 +189,5 @@ class TwitterAPIService {
  */
 
 interface TwitterDataHandler {
-	public function handle($data);
+	public function handle($req, $json_data);
 }

@@ -17,12 +17,20 @@ require_once 'PDO/Hashtag.class.php';
  */
 class TwitterDataParser implements TwitterDataHandler {
 
+	//// CONSTANTS
+
+	/**
+	 * Sample size, defines the requested length of twitterData before it's sent to processing stage
+	 * @const SAMPLE_SIZE
+	 */
+	const SAMPLE_SIZE = 1000;
+
 	//// PROPERTIES
 
 	/**
-	 * @var Object $twitterData, Stores new data recieved by Twitter Service.
+	 * @var Array<Tweets> $twitterData, Stores new data recieved by Twitter Service.
 	 */
-	private $twitterData = null;
+	private $twitterData = array();
 
 	/**
 	 * @var Array<String> Array of all the emoji characters referenced in the database.
@@ -43,31 +51,43 @@ class TwitterDataParser implements TwitterDataHandler {
 	 *
 	 * @param Object $data, data to parse
 	 */
-	public function handle($data) {
-		// set data
-		$this->twitterData = $data;
+	public function handle($req, $jsonData) {
+		$data = json_decode($jsonData);
 
-		echo "New data for:\n";
-		foreach (self::getTweetsGroupedByEmoji() as $emojiChar => $tweets) {
-			echo "$emojiChar";
-			$stats = new TweetSamples($tweets);
-			$emoji = Emoji::createFromChar($emojiChar);
-			Statistics::newDataPoint($stats, $emoji);
-		}
-
-		$logs = "";
-		foreach (self::getTweetsGroupedByHashtagAndEmoji() as $emojiChar => $hashs) {
-			
-			foreach ($hashs as $hash => $tweets) {
+		// if it's a tweet, push it inside the buffer
+		if (isset($data->text))
+			array_push($this->twitterData, $data);
+		
+		// if the buffer reach a sample size, parse the data and flush the buffer
+		if (self::SAMPLE_SIZE <= count($this->twitterData)) {
+			echo "New data for:\n";
+			foreach (self::getTweetsGroupedByEmoji() as $emojiChar => $tweets) {
+				echo "$emojiChar";
 				$stats = new TweetSamples($tweets);
 				$emoji = Emoji::createFromChar($emojiChar);
-				$hashtag = Hashtag::sudoCreateFromWord($hash); // if does not exist, force 
-
-				$logs .= "#$hash ";
-				Statistics::newDataPoint($stats, $emoji, $hashtag);
+				Statistics::newDataPoint($stats, $emoji);
 			}
+
+			$logs = "";
+			foreach (self::getTweetsGroupedByHashtagAndEmoji() as $emojiChar => $hashs) {
+				
+				foreach ($hashs as $hash => $tweets) {
+					$stats = new TweetSamples($tweets);
+					$emoji = Emoji::createFromChar($emojiChar);
+					$hashtag = Hashtag::sudoCreateFromWord($hash); // if does not exist, force 
+
+					$logs .= "#$hash ";
+					Statistics::newDataPoint($stats, $emoji, $hashtag);
+				}
+			}
+			echo "\n$logs\n";
+
+			// empty sample buffer
+			$this->twitterData = array();
+			return 0;
 		}
-		echo "\n$logs\n";
+
+		return strlen($jsonData);
 	}
 
 
@@ -84,7 +104,7 @@ class TwitterDataParser implements TwitterDataHandler {
 	private function getTweetsGroupedByEmoji() {
 		$ret = array();
 
-		foreach ($this->twitterData->statuses as $tweet) {
+		foreach ($this->twitterData as $tweet) {
 			foreach ($this->emojiList as $emojiChar) {
 				// checks if emoji is in tweet.
 				if (mb_stripos($tweet->text, $emojiChar, 0, "UTF-8")) {
