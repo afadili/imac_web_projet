@@ -12,7 +12,7 @@
 */
 
 $router->get('/', function () use ($router) {
-    return $router->app->version();
+    return view('hello');
 });
 
 /* Chaque route aura un préfixe /api */
