@@ -3,39 +3,42 @@
 namespace App\Http\Controllers;
 
 use App\Emoji;
+use App\Mood;
+use App\Hashtag;
+
 use Illuminate\Http\Request;
 
 class EmojiController extends Controller
 {
-
-    public function showAllEmojis()
+    /**
+     * @return all referenced emojis with details
+     */
+    public function getAll()
     {
         return response()->json(Emoji::all());
     }
 
-    public function showOneEmoji($id)
-    {
-        return response()->json(Emoji::find($id));
+    /**
+     * @return all emojis characters
+     */
+    public function getAllCharacters()
+    {   
+        return response()->json(Emoji::allCharacters());
     }
 
-    public function create(Request $request)
+    /**
+     * @return emoji corresponding to char
+     */
+    public function getByUnicode($char)
     {
-        $emoji = Emoji::create($request->all());
-
-        return response()->json($emoji, 201);
+        return response()->json(Emoji::where(['code' => $char]));
     }
 
-    public function update($id, Request $request)
+    /**
+     *@return emojis corresponding to a mood
+     */
+    public function getByMoodName($moodName)
     {
-        $emoji = Emoji::findOrFail($id);
-        $emoji->update($request->all());
-
-        return response()->json($emoji, 200);
+        return response()->json(Emoji::allFromMood(Mood::where(['name' => $moodName])));
     }
-
-    public function delete($id)
-    {
-        Emoji::findOrFail($id)->delete();
-        return response('Deleted Successfully', 200);
-    }
-}
+}   
