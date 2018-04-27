@@ -32,8 +32,9 @@ $router->group(['prefix' => 'api'], function() use ($router) {
 
     // HASHTAG
     $router->get('hashtag/', ['uses' => 'HashtagController@all']);
-    $router->get('hashtag/{word}', ['uses' => 'HashtagController@search']);
+    $router->get('hashtag/search/{word}', ['uses' => 'HashtagController@search']);
+    $router->get('hashtag/byemoji/{code}', ['uses' => 'HashtagController@getByEmoji']);
 
     $router->get('mood/', ['uses' => 'MoodController@all']);
-    $router->get('mood/{word}', ['uses' => 'MoodController@search']);
+    $router->get('mood/byemoji/{code}', ['uses' => 'MoodController@getByEmoji']);
 });
