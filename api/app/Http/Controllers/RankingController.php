@@ -9,7 +9,8 @@ class RankingController extends Controller
 {
     public function emojisBetween($param, $date_min, $date_max) {
         // protect from sql injections. since sanitisation doesnt work
-        if(!in_array($param, ['usage','average_retweets','average_favorites','average_responses','average_popularity']))
+        $validParams = ['usage','average_retweets','average_favorites','average_responses','average_popularity'];
+        if(!in_array($param, $validParams))
         {
             return NULL;
         } 
@@ -21,7 +22,8 @@ class RankingController extends Controller
             AVG(avgretweets) as `average_retweets`, 
             AVG(avgfavorites) as `average_favorites`, 
             AVG(avgpopularity) as `average_responses`, 
-            AVG(avgresponses) as `average_popularity`
+            AVG(avgresponses) as `average_popularity`,
+            bestTweet
 
         FROM emojis 
             JOIN relations ON emojis.id = idEmoji
@@ -33,8 +35,26 @@ class RankingController extends Controller
         GROUP BY emojis.id
         ORDER BY `".$param."`  DESC";
 
-        return DB::select($sql, [':date_min'=>$date_min,':date_max'=>$date_max]);    
+        $results = DB::select($sql, [':date_min'=>$date_min,':date_max'=>$date_max]);
 
+        // group emojis columns in an emoji sub-array
+        $formatedResults = [];
+        foreach ($results as $result) {
+            $new = ['emoji'=>[]];
+            foreach ($result as $key => $value) {
+                if(!in_array($key, $validParams))
+                {
+                    $new['emoji'][$key] = $value;
+                }
+                else
+                {
+                    $new[$key] = $value;
+                }
+            }
+            array_push($formatedResults,$new);
+        }
+
+        return $formatedResults;
     }
 
     public function emojisSince($param, $date_min) {
