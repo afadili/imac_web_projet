@@ -7,35 +7,14 @@ use Illuminate\Http\Request;
 
 class HashtagController extends Controller
 {
-
-    public function showAllHashtags()
+    public function all()
     {
         return response()->json(Hashtag::all());
     }
 
-    public function showOneHashtag($id)
+    public function search($needle)
     {
-        return response()->json(Hashtag::find($id));
-    }
-
-    public function create(Request $request)
-    {
-        $hashtag = Hashtag::create($request->all());
-
-        return response()->json($hashtag, 201);
-    }
-
-    public function update($id, Request $request)
-    {
-        $hashtag = Hashtag::findOrFail($id);
-        $hashtag->update($request->all());
-
-        return response()->json($hashtag, 200);
-    }
-
-    public function delete($id)
-    {
-        Hashtag::findOrFail($id)->delete();
-        return response('Deleted Successfully', 200);
+        $res = Hashtag::where('word', 'like', $needle.'%')->pluck('word');
+        return response()->json($res);
     }
 }

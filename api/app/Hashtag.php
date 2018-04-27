@@ -2,6 +2,7 @@
 
 namespace App;
 
+use Illuminate\Support\Facades\DB;
 use Illuminate\Database\Eloquent\Model;
 
 class Hashtag extends Model
@@ -21,5 +22,8 @@ class Hashtag extends Model
      *
      * @var array
      */
-    protected $hidden = ['id'];
+    protected $hidden = [
+        'id'
+    ];
+
 }
