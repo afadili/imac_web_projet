@@ -27,6 +27,19 @@ $router->group(['prefix' => 'api'], function() use ($router) {
     	$router->get('/by_{method}/since_{date}',['uses' => 'RankingController@emojisSince']);
     	$router->get('/by_{method}/until_{date}',['uses' => 'RankingController@emojisUntil']);
     	$router->get('/by_{method}/between_{date}',['uses' => 'RankingController@emojisBetween']);
+
+    	// TODO : pie charts
+    	$router->group(['prefix' => 'share'], function() use ($router) {
+	    	$router->get('/by_{method}',['uses' => 'RankingController@emojisShare']);
+	    	$router->get('/by_{method}/since_{date}',['uses' => 'RankingController@emojisShareSince']);
+	    	$router->get('/by_{method}/until_{date}',['uses' => 'RankingController@emojisShareUntil']);
+	    	$router->get('/by_{method}/between_{date}',['uses' => 'RankingController@emojisShareBetween']);
+	    });
+    });
+
+    // HISTORIC
+    $router->group(['prefix' => 'history'], function() use ($router) {
+    	$router->get('/U+{code}/by_{method}', ['uses' => 'HistoryController@emojiStatOverTime']);
     });
 
     // EMOJI 
@@ -41,8 +54,8 @@ $router->group(['prefix' => 'api'], function() use ($router) {
 
     // STATISTICS
     $router->group(['prefix' => 'statistics'], function() use ($router) { 
-    	$router->get('/for_U+{emoji}', ['uses' => 'StatisticsController@getFromEmoji']);
-    	$router->get('/for_U+{emoji}/and_#{hashtag}', ['uses' => 'StatisticsController@getFromEmojiAndHashtag']);
+    	$router->get('/for_U+{code}', ['uses' => 'StatisticsController@getFromEmoji']);
+    	$router->get('/for_U+{code}/and_#{tag}', ['uses' => 'StatisticsController@getFromEmojiAndHashtag']);
     });
 
     // HASHTAG
