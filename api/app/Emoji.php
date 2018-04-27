@@ -3,6 +3,7 @@
 namespace App;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\DB;
 
 class Emoji extends Model
 {
@@ -29,36 +30,26 @@ class Emoji extends Model
      * search emoji by char, name, shortname, ASCII or unicode
      * @return emoji list
      */
-    public function search($needle) 
+    static public function search($needle) 
     {
-        // prepare wildcard params:
-        $params = [
-            ':same' => $needle,
-            ':beginby' => '%'.$needle,
-            ':inside' => '%'.$needle.'%'
-        ];
-
-        // Squirrel query
-        $sql = 'SELECT * FROM emoji
-            WHERE emoji LIKE :same
-            OR name LIKE :inside
-            OR shortname LIKE :beginby
-            OR ASCII LIKE :same
-            OR unicode LIKE :inside
-            ORDER BY name
-        ';
-
-        // execute 
-        $res = Emoji::select($query, $params);
-        return response()->json($res);
+        return DB::table('emoji')
+        ->where('emoji', 'like', $needle)
+        ->orWhere('name', 'like', '%'.$needle.'%')
+        ->orWhere('shortname', 'like', '%'.$needle.'%')
+        ->orWhere('code', 'like', $needle.'%')
+        ->orWhere('ascii', 'like', $needle.'%')
+        ->orderBy('shortname')
+        ->get();
     }
+
+
 
     /**
      * get all the characters without any information
      * @return array of character
      */
     static public function allCharacters() {
-        self::all()->pluck('emoji');
+        return DB::table('emoji')->pluck('emoji');
     }
 
     /**
@@ -66,15 +57,14 @@ class Emoji extends Model
      */
     static public function allFromMood($mood) 
     {
-        $query = 'SELECT * FROM emoji WHERE idMood IN (SELECT id FROM mood WHERE id = ?)';
-        $res = Emoji::select($query, array($mood->get('id')));
-        return response()->json($res);
+        $query = 'SELECT * FROM emoji WHERE ';
+        return DB::table('emoji')->whereRaw('idMood IN (SELECT id FROM mood WHERE id = ?)', [$mood->get('id')]);
     }
 
     /**
      * @return the list of emoji used with a referenced hashtag
      */
-    public function allFromHashtag($hashtaf) 
+    public function allFromHashtag($hashtag) 
     {
         $query = 'SELECT * FROM emoji WHERE id IN (SELECT idEmoji FROM relation WHERE idHashtag = ?)';
         $res = Emoji::select($query, array($hashtag->get('id')));

@@ -22,6 +22,7 @@ $router->group(['prefix' => 'api'], function() use ($router) {
 
     // EMOJI 
     $router->get('emoji', ['uses' => 'EmojiController@getAll']);
+    $router->get('emoji/search/{needle}', ['uses' => 'EmojiController@search']);
     $router->get('emoji/characters', ['uses' => 'EmojiController@getAllCharacters']);
     $router->get('emoji/U+{code}', ['uses' => 'EmojiController@getByUnicode']);
     $router->get('emoji/mood/{mood}', ['uses' => 'EmojiController@getByMoodName']);

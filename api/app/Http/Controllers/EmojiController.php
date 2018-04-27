@@ -19,6 +19,14 @@ class EmojiController extends Controller
     }
 
     /**
+     * @return all emojis matching needle
+     */
+    public function search($needle)
+    {   
+        return response()->json(Emoji::search($needle));
+    }
+
+    /**
      * @return all emojis characters
      */
     public function getAllCharacters()
@@ -31,7 +39,7 @@ class EmojiController extends Controller
      */
     public function getByUnicode($char)
     {
-        return response()->json(Emoji::where(['code' => $char]));
+        return response()->json(Emoji::whereIn('code', ['U+'.$char]));
     }
 
     /**
@@ -39,6 +47,6 @@ class EmojiController extends Controller
      */
     public function getByMoodName($moodName)
     {
-        return response()->json(Emoji::allFromMood(Mood::where(['name' => $moodName])));
+        return response()->json(Emoji::allFromMood(Mood::where('name',$moodName)));
     }
 }   
