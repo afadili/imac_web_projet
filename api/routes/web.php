@@ -11,6 +11,7 @@
 |
 */
 
+
 $router->get('/', function () use ($router) {
     return view('hello');
 });
@@ -22,7 +23,10 @@ $router->group(['prefix' => 'api'], function() use ($router) {
 
     // RANKING 
     $router->group(['prefix' => 'ranking'], function() use ($router) {
-    	$router->get('/emojis/by_{method}',['uses' => 'RankingController@emojis']);
+    	$router->get('/by_{method}',['uses' => 'RankingController@emojis']);
+    	$router->get('/by_{method}/since_{date}',['uses' => 'RankingController@emojisSince']);
+    	$router->get('/by_{method}/until_{date}',['uses' => 'RankingController@emojisUntil']);
+    	$router->get('/by_{method}/between_{date}',['uses' => 'RankingController@emojisBetween']);
     });
 
     // EMOJI 
@@ -42,13 +46,15 @@ $router->group(['prefix' => 'api'], function() use ($router) {
     });
 
     // HASHTAG
-    $router->get('hashtag/', ['uses' => 'HashtagController@all']);
-    $router->get('hashtag/search/{word}', ['uses' => 'HashtagController@search']);
-    $router->get('hashtag/for_U+{code}', ['uses' => 'HashtagController@getByEmoji']);
+    $router->group(['prefix' => 'hashtag'], function() use ($router) {
+	    $router->get('/', ['uses' => 'HashtagController@all']);
+	    $router->get('/search/{word}', ['uses' => 'HashtagController@search']);
+	    $router->get('/for_U+{code}', ['uses' => 'HashtagController@getByEmoji']);
+	});
 
     // MOOD
-    $router->get('mood/', ['uses' => 'MoodController@all']);
-    $router->get('mood/for_U+{code}', ['uses' => 'MoodController@getByEmoji']);
-
-
+    $router->group(['prefix' => 'mood'], function() use ($router) {
+	    $router->get('/', ['uses' => 'MoodController@all']);
+	    $router->get('/for_U+{code}', ['uses' => 'MoodController@getByEmoji']);
+	});
 });
