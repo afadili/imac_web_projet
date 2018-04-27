@@ -20,6 +20,11 @@ $router->group(['prefix' => 'api'], function() use ($router) {
     
     /* Méthodes GET */
 
+    // RANKING 
+    $router->group(['prefix' => 'ranking'], function() use ($router) {
+    	$router->get('/emojis/by_{method}',['uses' => 'RankingController@emojis']);
+    });
+
     // EMOJI 
     $router->group(['prefix' => 'emoji'], function() use ($router) {
     	$router->get('/', ['uses' => 'EmojiController@getAll']);

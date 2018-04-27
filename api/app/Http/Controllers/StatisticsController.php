@@ -19,29 +19,11 @@ class StatisticsController extends Controller
 
     // TODO: ADD MINMAX DATE
     public function getFromEmoji($code) {
-        $idEmoji = Emoji::where('code', 'like', '%U+'.$code.'%')->get()->first()->id;
-        $sql = '
-            id IN (
-                SELECT idStat FROM relations
-                WHERE idEmoji = ? AND idHashtag IS NULL
-            )';
-
-        $res = Statistics::whereRaw($sql, [$idEmoji])->get();
-        return response()->json($res);
+        return response()->json(Statistics::whereEmoji($code)->get());
     }
 
     // TODO: ADD MINMAX DATE
-    public function getFromEmojiAndHashtag($hashtag,$code) {
-        $idEmoji = Emoji::where('code', 'like', '%U+'.$code.'%')->get()->first()->id;
-        $idHashtag = Hashtag::where('word', 'like', $hashtag)->get()->first()->id;
-
-        $sql = '
-            id IN (
-                SELECT idStat FROM relations
-                WHERE idEmoji = :emoji AND idHashtag = :hash
-            )';
-
-        $res = Statistics::whereRaw($sql, [':emoji' => $idEmoji, ':hash' => $idHashtag])->get();
-        return response()->json($res);
+    public function getFromEmojiAndHashtag($code,$hashtag) {
+        return response()->json(Statistics::whereEmojiAndHashtag($code,$hashtag)->get);
     }
 }
