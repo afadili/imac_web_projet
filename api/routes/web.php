@@ -26,8 +26,8 @@ $router->group(['prefix' => 'api'], function() use ($router) {
     	$router->get('/search/{needle}', ['uses' => 'EmojiController@search']);
     	$router->get('/characters', ['uses' => 'EmojiController@getAllCharacters']);
     	$router->get('/U+{code}', ['uses' => 'EmojiController@getByUnicode']);
-    	$router->get('/bymood/{mood}', ['uses' => 'EmojiController@getByMoodName']);
-    	$router->get('/byhashtag/#{word}', ['uses' => 'EmojiController@getByMoodName']);
+    	$router->get('/bymood/{mood}', ['uses' => 'EmojiController@getByMood']);
+    	$router->get('/byhashtag/{word}', ['uses' => 'EmojiController@getByHashtag']);
     });
 
     // HASHTAG
