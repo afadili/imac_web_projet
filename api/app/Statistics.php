@@ -4,8 +4,9 @@ namespace App;
 
 use Illuminate\Database\Eloquent\Model;
 
-class Statistique extends Model
+class Statistics extends Model
 {
+    protected $table = 'statistics';
 
     /**
      * The attributes that are mass assignable.
@@ -13,7 +14,7 @@ class Statistique extends Model
      * @var array
      */
     protected $fillable = [
-        'idBatch', 'nbTweets', 'avgRetweets', 'avgFavorite', 'avgResponses', 'AvgPopularity', 'bestTweet'
+        'idBatch', 'nbTweets', 'avgRetweets', 'avgFavorite', 'avgResponses', 'avgPopularity', 'bestTweet'
     ];
 
     /**

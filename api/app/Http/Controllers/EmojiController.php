@@ -59,7 +59,7 @@ class EmojiController extends Controller
      */
     public function getByMood($name)
     {
-        return response()->json(Emoji::allFromMood(Mood::where('name', 'like',$name)->get()->first()));
+        return response()->json(Emoji::allFromMood(Mood::where('name', 'like', $name)->get()->first()));
     }
 
     /**
@@ -68,6 +68,6 @@ class EmojiController extends Controller
      */
     public function getByHashtag($word)
     {
-        return response()->json(Emoji::allFromHashtag(Hashtag::where('word', 'like' ,$word)->get()->first()));
+        return response()->json(Emoji::allFromHashtag(Hashtag::where('word', 'like', $word)->get()->first()));
     }
 }   

@@ -30,11 +30,20 @@ $router->group(['prefix' => 'api'], function() use ($router) {
     	$router->get('/byhashtag/{word}', ['uses' => 'EmojiController@getByHashtag']);
     });
 
+    // STATISTICS
+    $router->group(['prefix' => 'statistics'], function() use ($router) { 
+    	$router->get('/byemoji/U+{emoji}', ['uses' => 'StatisticsController@getFromEmoji']);
+    	$router->get('/byemoji/U+{emoji}/andhashtag/{hashtag}', ['uses' => 'StatisticsController@getFromEmojiAndHashtag']);
+    });
+
     // HASHTAG
     $router->get('hashtag/', ['uses' => 'HashtagController@all']);
     $router->get('hashtag/search/{word}', ['uses' => 'HashtagController@search']);
-    $router->get('hashtag/byemoji/{code}', ['uses' => 'HashtagController@getByEmoji']);
+    $router->get('hashtag/byemoji/U+{code}', ['uses' => 'HashtagController@getByEmoji']);
 
+    // MOOD
     $router->get('mood/', ['uses' => 'MoodController@all']);
-    $router->get('mood/byemoji/{code}', ['uses' => 'MoodController@getByEmoji']);
+    $router->get('mood/byemoji/U+{code}', ['uses' => 'MoodController@getByEmoji']);
+
+
 });
