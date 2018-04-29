@@ -25,5 +25,24 @@ class Hashtag extends Model
     protected $hidden = [
         'id'
     ];
-
+	
+	
+	/**
+	 * Sudo Get
+	 * get hashtag or insert if doesn't exist
+	 * @param String $word
+	 * @return Hashtag
+	 */
+	
+	public static function sudoGet($word) {
+		$ret = self::where('word', 'like', $word)->first();
+		
+		if (empty($ret))
+		{
+			$ret = self::insertGetId(['word' => $word]);
+			$ret = self::where('id', '=', $ret)->first();
+		}
+		
+		return $ret;
+	}
 }

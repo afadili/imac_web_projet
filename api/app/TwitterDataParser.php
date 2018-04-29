@@ -14,13 +14,6 @@ use App\TweetSamples;
  */
 class TwitterDataParser {
 
-	//// CONSTANTS
-
-	/**
-	 * Sample size, defines the requested length of twitterData before it's sent to processing stage
-	 * @const SAMPLE_SIZE
-	 */
-
 	//// PROPERTIES
 
 	/**
@@ -64,8 +57,8 @@ class TwitterDataParser {
 		foreach (self::getTweetsGroupedByEmoji() as $emojiChar => $tweets) {
 			echo "$emojiChar";
 			$stats = new TweetSamples($tweets);
-			//$emoji = Emoji::createFromChar($emojiChar);
-			//Statistics::newDataPoint($stats, $emoji);
+			$emoji = Emoji::where('char', 'like', $emojiChar)->first();
+			Statistics::newDataPoint($stats, $emoji);
 		}
 
 		$logs = "";
@@ -73,11 +66,11 @@ class TwitterDataParser {
 			
 			foreach ($hashs as $hash => $tweets) {
 				$stats = new TweetSamples($tweets);
-				//$emoji = Emoji::createFromChar($emojiChar);
-				//$hashtag = Hashtag::sudoCreateFromWord($hash); // if does not exist, force 
+				$emoji = Emoji::where('char', 'like', $emojiChar)->first();
+				$hashtag = Hashtag::sudoGet($hash); // if does not exist, force and insert a new entry
 
 				$logs .= "#$hash\n";
-				//Statistics::newDataPoint($stats, $emoji, $hashtag);
+				Statistics::newDataPoint($stats, $emoji, $hashtag);
 			}
 		}
 		echo "\n$logs\n";
