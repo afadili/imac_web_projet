@@ -53,13 +53,14 @@ $router->group(['prefix' => 'api'], function() use ($router) {
     // HASHTAG
     $router->group(['prefix' => 'hashtag'], function() use ($router) {
 	    $router->get('/', ['uses' => 'HashtagController@all']);
-	    $router->get('/search/{word}', ['uses' => 'HashtagController@search']);
+	    $router->get('/search_{word}', ['uses' => 'HashtagController@search']);
 	    $router->get('/for_U+{code}', ['uses' => 'HashtagController@getByEmoji']);
 	});
 
     // MOOD
     $router->group(['prefix' => 'mood'], function() use ($router) {
 	    $router->get('/', ['uses' => 'MoodController@all']);
+        $router->get('/search_{word}', ['uses' => 'MoodController@search']);
 	    $router->get('/for_U+{code}', ['uses' => 'MoodController@getByEmoji']);
 	});
 });

@@ -63,33 +63,40 @@
 		</nav>
 
 		<article>
+			<!-- RANKING -->
 			<h4 id='Ranking'>Ranking</h4>
 			
 			<code>api/ranking/by_{<i>method</i>}/[since_{<i>date</i>} || between_{<i>date</i>}_and_{<i>date</i>} || until_{<i>date</i>}]</code>
 
 			<ul>
-				<li><i>Method</i>: String in <code>'usage','average_retweets','average_favorites','average_responses','average_popularity'</code></li>
+				<li><i>Method</i>: String in <code>'usage'</code>,<code>'average_retweets'</code>,<code>'average_favorites'</code>,<code>'average_responses'</code>,<code>'average_popularity'</code></li>
 				<li><i>date</i>: Int timestamp</li>
 			</ul>
 
-			<p>Return sorted list of emojis. The sorting method is defined by <code>{method}</code>. </p>
+			<p>Return sorted list of emojis. The sorting method is defined by <code>{<i>method</i>}</code>. </p>
 		</article>
 
+
+
 		<article>
+			<!-- HISTORY -->
 			<h4 id='History'>History</h4>
 
 			<code>api/history/U+{<i>code</i>}/of_{<i>method</i>}/[since_{<i>date</i>} || between_{<i>date</i>}_and_{<i>date</i>} || until_{<i>date</i>}]</code>
 
 			<ul>
 				<li><i>Code</i>: Hexadecimal value, Unicode (ex: U+F103E) </li>
-				<li><i>Method</i>: String in <code>'usage','average_retweets','average_favorites','average_responses','average_popularity'</code></li>
+				<li><i>Method</i>: String in <code>'usage'</code>,<code>'average_retweets'</code>,<code>'average_favorites'</code>,<code>'average_responses'</code>,<code>'average_popularity'</code></li>
 				<li><i>date</i>: Int timestamp</li>
 			</ul>
 
 			<p>Return array of number and dates corresponding to every datapoint of the given emoji over time.</p>
 		</article>
 
+
+
 		<article>
+			<!-- EMOJIS -->
 			<h4 id='Emoji'>Emoji</h4>
 			<code>api/emoji/</code>
 			<p>Returns all referenced emoji. Objects containing info such as Unicodes, ASCII representation ':-)', Name, description etc...</p>
@@ -116,7 +123,10 @@
 			<p>Returns all emojis used with an hashtag or representing a mood. Word must be a referenced hashtag/mood.</p>
 		</article>
 
+
+
 		<article>
+			<!-- MOOD -->
 			<h4 id="Mood">Mood</h4>
 			<code>api/mood/</code>
 			<p>Returns all referenced moods.</p>
@@ -134,7 +144,10 @@
 			<p>Returns list of mood linked with the emoji</p>
 		</article>
 
+
+
 		<article>
+			<!-- HASHTAG -->
 			<h4 id="Hashtag">Hashtag</h4>
 			<code>api/hashtag/</code>
 			<p>Returns all referenced hashtags.</p>
@@ -153,7 +166,9 @@
 		</article>
 
 
+
 		<article>
+			<!-- STATISTICS -->
 			<h4 id="Statistics">Statistics</h4>
 
 			<code>api/hashtag/for_U+{<i>code</i>}</code>
