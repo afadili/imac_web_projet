@@ -1,0 +1,114 @@
+Running scheduled command: calling Twitter API
+New parser..
+Prepare HTTP header...
+Send Request...
+Stream Closed.
+Parsing 281tweets.
+New data for:
+😃💗💭🦄💙🏽😂🤷♀️💫😄🏻🙏😇💘💁‍♀️💁🙄♻️😵🏆🏾☹️😙™️👌😊💖💛💜☔🎁😁🌷👍😳😩👅🤪😒😭💪👇😐☺️😫🤯😆😍🤔♂️✊🔴⚫
+In Hashtag.php line 47:
+                                                            
+  Parse error: syntax error, unexpected '}', expecting ';'  
+                                                            
+
+Running scheduled command: calling Twitter API
+New parser..
+Prepare HTTP header...
+Send Request...
+Stream Closed.
+Parsing 361tweets.
+New data for:
+🔔😌😍😅💯🚨😄🌻✨👆👑😉🎈😊🤔💁💋🎮💎🕰️🖥️😃💭🎥🐥🌲✍️🇫🇮🤣🤗⚖️❤️💔😇😔❣️🙏💅😨😂😓💕😭😘😞🔴♻️⚡✅
+In Hashtag.php line 47:
+                                                            
+  Parse error: syntax error, unexpected '}', expecting ';'  
+                                                            
+
+Running scheduled command: calling Twitter API
+New parser..
+Prepare HTTP header...
+Send Request...
+Stream Closed.
+Parsing 342tweets.
+New data for:
+🇵🇰💔😏❤️🌎🐄🐑🐖😂😉❌🤔😙🤩👉💕😍✨🏻🙂🤦♀️😭👊💗♻️🤷♂️💭👇💪👏👍⚡✋💀🔴💦😟😳🤤😼😊😓😶🤣🤫👑👌🏼💛🔥😆👀🏆😈😁
+In Hashtag.php line 47:
+                                                            
+  Parse error: syntax error, unexpected '}', expecting ';'  
+                                                            
+
+Running scheduled command: calling Twitter API
+New parser..
+Prepare HTTP header...
+Send Request...
+Stream Closed.
+Parsing 337tweets.
+New data for:
+😭🌈🍀🏨🏻🐶🐼💕💘😍🤓☕✨❤️💯💰🔥👀👅♥️🌸🇪🇸🎾👏💪♻️😅💙😑😠😡😢😝🙋♀️😄👻😂👍😊🇮🇱👠✡️🎉🔹▫️🕊️🌟🍯🏼😥🙏🤔🌃😔🤣😘😀🤦🤷♂️🎶💏💛
+In Hashtag.php line 47:
+                                                            
+  Parse error: syntax error, unexpected '}', expecting ';'  
+                                                            
+
+Running scheduled command: calling Twitter API
+New parser..
+Prepare HTTP header...
+Send Request...
+Stream Closed.
+Parsing 431tweets.
+New data for:
+😎😛😜😝😂🐾😯💗😊👍💙🌴🐦👿🏻😕🤷♀️🐙👗💓😍🚗🚹😻🥃🔻👀💛✨❕👈👉😉💕💞👏♻️👑📰💦😭🤐❗😡❤️🏾🖤☠️🌆📞🚖💧✊🤩😩🌸🏼👇🍩🍪🍫👌
+In Hashtag.php line 47:
+                                                            
+  Parse error: syntax error, unexpected '}', expecting ';'  
+                                                            
+
+Running scheduled command: calling Twitter API
+New parser..
+Prepare HTTP header...
+Send Request...
+Stream Closed.
+Parsing 397tweets.
+New data for:
+☹️
+In Statistics.php line 147:
+                                                                               
+  Parse error: syntax error, unexpected '=>' (T_DOUBLE_ARROW), expecting ','   
+  or ')'                                                                       
+                                                                               
+
+Running scheduled command: calling Twitter API
+New parser..
+Prepare HTTP header...
+Send Request...
+Stream Closed.
+Parsing 1tweets.
+New data for:
+⚽
+In Statistics.php line 148:
+                                                                 
+  Parse error: syntax error, unexpected '$idBatch' (T_VARIABLE)  
+                                                                 
+
+Running scheduled command: calling Twitter API
+New parser..
+Prepare HTTP header...
+Send Request...
+Stream Closed.
+Parsing 28tweets.
+New data for:
+😴♏🏻🤴♻️
+
+end.Running scheduled command: calling Twitter API
+New parser..
+Prepare HTTP header...
+Send Request...
+Stream Closed.
+Parsing 59tweets.
+New data for:
+😍🙋🍻😂🎉😊😠😎🏼👊‼️
+#thekairoscollective
+#andywarhol
+#sundayfunday
+
+end.

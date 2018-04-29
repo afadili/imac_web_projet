@@ -3,6 +3,10 @@
 namespace App;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\DB;
+
+use App\TweetSamples;
+use App\Jobs\TwitterApiCall;
 
 class Statistics extends Model
 {
@@ -51,7 +55,7 @@ class Statistics extends Model
                 WHERE idEmoji = ? AND idHashtag IS NULL
             )';
 
-        return Statistics::whereRaw($sql, [$idEmoji])
+        return Statistics::whereRaw($sql, [$idEmoji]);
     }
 
 
@@ -111,7 +115,54 @@ class Statistics extends Model
 
         if(isset($param['since']))
         {
-            $query->addWhere()
+            $query->addWhere();
         }
     }
+	
+	
+	
+	/**
+	 * NEW DATA POINT
+	 * Insert new statistics and binds it with an emoji and optionaly an Hashtag
+	 * @param StatisticsData $data, data object with the stats to push to the database
+	 * @param Emoji $emoji, Emoji linked with the new stat.
+	 * @param Hashtag $hashtag, (optional) Hashtag linked with the new stat.
+	 */
+	public static function newDataPoint(TweetSamples $data, $emoji, $hashtag = NULL) {
+		$batches = DB::table('batches');
+		
+		// get latest batch
+		$batch = $batches->orderBy('date')->first();
+
+		// get timestamp
+		$batchdate = (new \DateTime($batch->date))->getTimestamp();
+		
+		// check if batch is still active
+		if ($batchdate + TwitterApiCall::TIME_OUT < time())
+		{
+			$idBatch = $batches->insertGetId(['size' => $data->count()]);
+		} 
+		else 
+		{
+			$batches->orderBy('date')->limit(1)->increment('size', $data->count());
+			$idBatch = $batch->id;
+		}
+		
+		$statistics = self::insertGetId([
+			'nbTweets' => $data->count(),
+			'bestTweet' => $data->best(),
+			'avgRetweets' => $data->avgRetweets(),
+			'avgFavorites' => $data->avgFavorites(),
+			'avgResponses' => $data->avgResponses(),
+			'avgPopularity' => $data->avgPopularity(),
+			'idBatch' => $idBatch
+		]);
+		
+		DB::table('relations')
+			->insert([
+				'idStat' => $statistics,
+				'idEmoji' => $emoji->id,
+				'idHashtag' => (($hashtag !== NULL)? $hashtag->id : NULL)
+			]);
+	}
 }
