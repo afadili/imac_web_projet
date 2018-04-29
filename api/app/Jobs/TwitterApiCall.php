@@ -2,6 +2,8 @@
 
 namespace App\Jobs;
 
+use App\TwitterDataParser;
+
 /**
  * TWITTER API CALL
  * -------------------
@@ -18,7 +20,7 @@ class TwitterAPICall extends Job
 	 * Length of request before it stops.
 	 * @const Integer TIME_OUT in seconds
 	 */
-	const TIME_OUT = 3
+	const TIME_OUT = 3;
 
 	/**
 	 * Target url for api requests
@@ -67,22 +69,24 @@ class TwitterAPICall extends Job
 	 * Contains information for OAuth
 	 * @var Object 
 	 */
-	private static $HTTPRequestHeader;
+	private static $HTTPRequestHeader = array();
 
 
 	/**
-	 * Request handler
-	 * Object implementing the TwitterDataHandler interface
-	 * Handles new data following requests. 
+	 * Data Parser
+	 * Class handling the data and parsing it for database
 	 *
-	 * @var TwitterDataHandler requestHandler
+	 * @var TwitterDataParser $dataParser
 	 */
-	private static $requestHandler;
+	private $dataParser = null;
+	
+	
 	
 	/* --- METHODS --- */
 	
 	public function __construct() {
-		
+		echo "New parser..\n";
+		$this->dataParser = new TwitterDataParser();
 	}
 	
 	/** 
@@ -95,6 +99,7 @@ class TwitterAPICall extends Job
 	 * @param TwitteerDataHandler $onRequest
 	 */
      public function handle() {
+		echo "Prepare HTTP header...\n";
 		self::generateRequestHeader();
 
 		$ch = curl_init();
@@ -107,9 +112,13 @@ class TwitterAPICall extends Job
 		    CURLOPT_RETURNTRANSFER => true,
 		    CURLOPT_WRITEFUNCTION => array($this, 'incommingStreamHandler')
 		));
-
+		
+		echo "Send Request...\n";
 		curl_exec($ch);
 		curl_close($ch);
+		echo "Stream Closed.\n";
+		$this->dataParser->parseBuffer();
+		echo "end.";
 	}
 
 
@@ -122,8 +131,7 @@ class TwitterAPICall extends Job
     public function incommingStreamHandler($request, $jsonData)
     {
 		$data = json_decode($jsonData);
-		echo '.';
-		
+		$this->dataParser->pushInBuffer($data);
 		return strlen($jsonData);
     }
 	
