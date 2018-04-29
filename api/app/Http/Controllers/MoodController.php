@@ -16,6 +16,8 @@ use Illuminate\Http\Request;
  */
 class MoodController extends Controller
 {
+
+
 	/**
      * All
      * 
@@ -26,6 +28,8 @@ class MoodController extends Controller
     {
         return response()->json(Mood::pluck('name'));
     }
+
+
 
 	/**
      * Search
@@ -40,6 +44,8 @@ class MoodController extends Controller
         return response()->json($res);
     }
 
+
+
     /**
      * Get by emoji
      *
@@ -47,7 +53,10 @@ class MoodController extends Controller
      * @param Hexadecimal value $code, Unicode
      * @return JSON: String
      */
-    public function getByEmoji($code) {
+    public function getByEmoji($code)
+    {
     	// TODO
     }
+
+    
 }

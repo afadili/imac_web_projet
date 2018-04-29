@@ -35,7 +35,8 @@ class RankingController extends Controller
      *          'totals': {Int usage, ... , Float average_popularity}
      *      }
      */
-    public function emojisBetween($param, $date_min, $date_max) {
+    public function emojisBetween($param, $date_min, $date_max)
+    {
         
         $validParams = ['usage','average_retweets','average_favorites','average_responses','average_popularity'];
 
@@ -106,7 +107,8 @@ class RankingController extends Controller
      * @param String $date_min, minimum date
      * @return String JSON response
      */
-    public function emojisSince($param, $date_min) {
+    public function emojisSince($param, $date_min)
+    {
         return $this->emojisBetween($param, $date_min, '9999-12-31 23:59:59');
     }
 
@@ -121,7 +123,8 @@ class RankingController extends Controller
      * @param String $date_max, maximum date
      * @return String JSON response
      */
-    public function emojisUntil($param, $date_max) {
+    public function emojisUntil($param, $date_max)
+    {
         return $this->emojisBetween($param, '1970-01-01 00:00:00', $date_max);
     }
 
@@ -135,7 +138,8 @@ class RankingController extends Controller
      * @param String $param, ranking parameter, must be in: ['usage','average_retweets','average_favorites','average_responses','average_popularity']
      * @return String JSON response
      */
-    public function emojis($param) {
+    public function emojis($param)
+    {
         return $this->emojisBetween($param, '1970-01-01 00:00:00', '9999-12-31 23:59:59');
     }
 
