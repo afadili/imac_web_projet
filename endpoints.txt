@@ -1,0 +1,25 @@
+New endpoints : 
+ 
+  api/emoji/name 
+  Returns all names of emojis as and array
+ 
+  api/emoji/U+{code}/Nb_tweets
+  Returns the number of tweets of the referenced emoji
+  
+  api/emoji/U+{code}/Nb_tweets_by_month/[since{start_Date} until{end_Date}]
+  Returns an array of the number of tweets of the referenced emoji ranked by months 
+  
+  api/emoji/U+{code}/avg_Retweets
+  Returns the average of the retweets of the referenced emoji
+  
+  api/emoji/ranking/by_{hashtag}
+  Returns the ranking of the emojis by a referenced hashtag
+  
+  api/emoji/percentage/[since{start_Date} until{end_Date}]
+  Returns an array with the percentage of Nb-tweets by emoji
+  
+  api/emoji/top_ten_used/[since{start_Date} until{end_Date}]
+  Returns the ten most used emojis by Nb_tweets
+  
+  api/emoji/top_ten_popular/[since{start_Date} until{end_Date}]
+  Returns the ten most popular emojis by popularity in stats.
