@@ -8,6 +8,7 @@ use App\Jobs\TwitterApiCall;
 
 class Kernel extends ConsoleKernel
 {
+	
     /**
      * The Artisan commands provided by your application.
      *
@@ -16,6 +17,7 @@ class Kernel extends ConsoleKernel
     protected $commands = [
         //
     ];
+	
 
     /**
      * Define the application's command schedule.
@@ -25,15 +27,37 @@ class Kernel extends ConsoleKernel
      */
     protected function schedule(Schedule $schedule)
     {
+		/**
+		 * TWITTER AUTHENTIFICATION
+		 * ------------------------
+		 */
+
+		$apikey = 'Z0arj4wYR0TlRIcpdy4tdAvIR';
+		$apisecret = '3px8MvckKG4TpaOuUysLK4j4mndgpvsfoXHxQeG3ZjfBwK3YDR';
+		$accesstoken = '325628241-MkdJ62Jy2wVC12yt8jsQQdzwTR8nqnTHB1mAmDIV';
+		$accesstokensecret = 'uaMveJiLbGvN4TKIBp1UdNVdyTYJS8Iabh0CMs3CZnLuY';
+
+		TwitterAPICall::setAPIAccessTokens($apikey, $apisecret, $accesstoken, $accesstokensecret);
+		
 		if($_ENV['APP_ENV'] === 'production')
 		{
-			echo 'scheduling hourly twitter api calls';
-			$schedule->job(new TwitterAPICall)->hourly();
+			$schedule->call(function() {
+				$job = (new TwitterAPICall())->onQueue('cron');
+				dispatch($job);
+			})
+				->description('calling Twitter API')
+				->hourly();
 		}
+		
 		else
 		{
-			echo 'scheduling twitter api calls every minute';
-			$schedule->job(new TwitterAPICall)->everyMinute();
+			$schedule->call(function() {
+				$job = (new TwitterAPICall())->onQueue('cron');
+				dispatch($job);
+			})
+				->description('calling Twitter API')
+				->everyMinute();
 		}
     }
+	
 }
