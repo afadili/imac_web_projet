@@ -10,8 +10,6 @@ use App\Jobs\TwitterApiCall;
 
 class Statistics extends Model
 {
-	// CONSTANTS
-	const BATCH_TTL = $_ENV['BATCH_TTL'];
 	
     // PROPERTIES
 
@@ -141,10 +139,9 @@ class Statistics extends Model
 		$batchdate = (new \DateTime($batch->date))->getTimestamp();
 			
 		// check if batch is still active
-		if (time() - $batchdate > self::BATCH_TTL)
+		if (time() - $batchdate > $_ENV['BATCH_TTL'])
 		{
 			// create a new batch
-			echo "new batch\n";
 			$idBatch = $batches->insertGetId(['size' => $data->count()]);
 		} 
 		else 

@@ -14,13 +14,6 @@ use App\TwitterDataParser;
 class TwitterAPICall extends Job
 {
 	/* CONSTANTS */
-	
-	/**
-	 * Request timeout
-	 * Length of request before it stops.
-	 * @const Integer TIME_OUT in seconds
-	 */
-	const TIME_OUT = $_ENV['TWITTER_CALL_TIMEOUT'];
 
 	/**
 	 * Target url for api requests
@@ -108,7 +101,7 @@ class TwitterAPICall extends Job
 		    CURLOPT_SSL_VERIFYPEER => false,
 		    CURLOPT_HTTPHEADER     => self::$HTTPRequestHeader,
 		    CURLOPT_ENCODING       => 'gzip',
-		    CURLOPT_TIMEOUT        => self::TIME_OUT,
+		    CURLOPT_TIMEOUT        => $_ENV['TWITTER_CALL_TIMEOUT'],
 		    CURLOPT_RETURNTRANSFER => true,
 		    CURLOPT_WRITEFUNCTION => array($this, 'incommingStreamHandler')
 		));
@@ -118,7 +111,7 @@ class TwitterAPICall extends Job
 		curl_close($ch);
 		echo "Stream Closed.\n";
 		$this->dataParser->parseBuffer();
-		echo "end.";
+		echo "end.\n\n";
 	}
 
 
