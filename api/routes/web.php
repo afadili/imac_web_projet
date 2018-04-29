@@ -27,14 +27,6 @@ $router->group(['prefix' => 'api'], function() use ($router) {
     	$router->get('/by_{method}/since_{date}',['uses' => 'RankingController@emojisSince']);
     	$router->get('/by_{method}/until_{date}',['uses' => 'RankingController@emojisUntil']);
     	$router->get('/by_{method}/between_{date}',['uses' => 'RankingController@emojisBetween']);
-
-    	// TODO : pie charts
-    	$router->group(['prefix' => 'share'], function() use ($router) {
-	    	$router->get('/by_{method}',['uses' => 'RankingController@emojisShare']);
-	    	$router->get('/by_{method}/since_{date}',['uses' => 'RankingController@emojisShareSince']);
-	    	$router->get('/by_{method}/until_{date}',['uses' => 'RankingController@emojisShareUntil']);
-	    	$router->get('/by_{method}/between_{date}',['uses' => 'RankingController@emojisShareBetween']);
-	    });
     });
 
     // HISTORIC
