@@ -19,37 +19,142 @@
 	
 	<main>
 		<h2>Endpoints</h2>
-		<pre>
-			/
-			/api
-				/ranking/emojis
-					/by_{method} [usage, average_retweets, average_favorites, average_popularity, average_responses] 
-					/by_{method}/limit_to_{number}	#todo
-					/by_{method}/since_{date}/limit_to_{number} #todo
-					/by_{method}/between_{date}_and_{date}/limit_to_{number} #todo
+		<nav>
+			<ul>
+				<li><a href='#Ranking'>Ranking</a></li>
+				<li><a href='#History'>History</a></li>
+				<li><a href='#Emoji'>Emoji</a></li>
+				<li><a href='#Mood'>Mood</a></li>
+				<li><a href='#Hashtag'>Hashtag</a></li>
+				<li><a href='#Statistics'>Statistics</a></li>
+			</ul>
+		</nav>
 
-				/emoji
-					/ 			 
-					/characters		#all emojis characters in an array
-					/search/{needle}  	 
-					/U+{code}		 
-					/bymood/{mood}   
-					/byhashtag/{word}
+		<article>
+			<!-- RANKING -->
+			<h4 id='Ranking'>Ranking</h4>
+			
+			<code>api/ranking/by_{<i>method</i>}/[since_{<i>date</i>} || between_{<i>date</i>}_and_{<i>date</i>} || until_{<i>date</i>}]</code>
 
-				/statistics
-					/for_U+{code}
-					/for_U+{code}/and_#{hashtag}
+			<ul>
+				<li><i>Method</i>: String in <code>'usage'</code>,<code>'average_retweets'</code>,<code>'average_favorites'</code>,<code>'average_responses'</code>,<code>'average_popularity'</code></li>
+				<li><i>date</i>: Int timestamp</li>
+			</ul>
 
-				/hashtags 
-					/
-					/search_{word}
-					/for_U+{code}
+			<p>Return sorted list of emojis. The sorting method is defined by <code>{<i>method</i>}</code>. </p>
+		</article>
 
-				/mood
-					/
-					/for_U+{code}
 
-		</pre>
+
+		<article>
+			<!-- HISTORY -->
+			<h4 id='History'>History</h4>
+
+			<code>api/history/U+{<i>code</i>}/of_{<i>method</i>}/[since_{<i>date</i>} || between_{<i>date</i>}_and_{<i>date</i>} || until_{<i>date</i>}]</code>
+
+			<ul>
+				<li><i>Code</i>: Hexadecimal value, Unicode (ex: U+F103E) </li>
+				<li><i>Method</i>: String in <code>'usage'</code>,<code>'average_retweets'</code>,<code>'average_favorites'</code>,<code>'average_responses'</code>,<code>'average_popularity'</code></li>
+				<li><i>date</i>: Int timestamp</li>
+			</ul>
+
+			<p>Return array of number and dates corresponding to every datapoint of the given emoji over time.</p>
+		</article>
+
+
+
+		<article>
+			<!-- EMOJIS -->
+			<h4 id='Emoji'>Emoji</h4>
+			<code>api/emoji/</code>
+			<p>Returns all referenced emoji. Objects containing info such as Unicodes, ASCII representation ':-)', Name, description etc...</p>
+
+			<code>api/emoji/characters</code>
+			<p>Returns all referenced emoji as an array of characters.</p>	
+			<code>api/emoji/U+{<i>code</i>}</code>
+			<ul>
+				<li><i>Code</i>: Hexadecimal value, Unicode (ex: U+F103E) </li>
+			</ul>
+			<p>Returns matching emoji</p>
+
+			<code>api/emoji/search_{<i>needle</i>}</code>
+			<ul>
+				<li><i>needle</i>: String</li>
+			</ul>
+			<p>Returns list of emojis with names, code, character or anything matching the <i>needle</i></p>
+
+			<code>api/emoji/by_mood_{<i>word</i>}</code><br>
+			<code>api/emoji/by_hashtag_{<i>word</i>}</code>
+			<ul>
+				<li><i>word</i>: String</li>
+			</ul>
+			<p>Returns all emojis used with an hashtag or representing a mood. Word must be a referenced hashtag/mood.</p>
+		</article>
+
+
+
+		<article>
+			<!-- MOOD -->
+			<h4 id="Mood">Mood</h4>
+			<code>api/mood/</code>
+			<p>Returns all referenced moods.</p>
+
+			<code>api/mood/search_{<i>needle</i>}</code>
+			<ul>
+				<li><i>needle</i>: String</li>
+			</ul>
+			<p>Returns list of mood with names matching the <i>needle</i></p>
+
+			<code>api/mood/for_U+{<i>code</i>}</code>
+			<ul>
+				<li><i>code</i>: Hexadecimal value, Unicode</li>
+			</ul>
+			<p>Returns list of mood linked with the emoji</p>
+		</article>
+
+
+
+		<article>
+			<!-- HASHTAG -->
+			<h4 id="Hashtag">Hashtag</h4>
+			<code>api/hashtag/</code>
+			<p>Returns all referenced hashtags.</p>
+
+			<code>api/hashtag/search_{<i>needle</i>}</code>
+			<ul>
+				<li><i>needle</i>: String</li>
+			</ul>
+			<p>Returns list of hashtag with names matching the <i>needle</i></p>
+
+			<code>api/hashtag/for_U+{<i>code</i>}</code>
+			<ul>
+				<li><i>code</i>: Hexadecimal value, Unicode</li>
+			</ul>
+			<p>Returns list of hashtag used with the emoji</p>
+		</article>
+
+
+
+		<article>
+			<!-- STATISTICS -->
+			<h4 id="Statistics">Statistics</h4>
+
+			<code>api/hashtag/for_U+{<i>code</i>}</code>
+			<ul>
+				<li><i>code</i>: Hexadecimal value, Unicode</li>
+			</ul>
+			<p>Returns list of statistics linked with the emoji</p>
+
+
+			<code>api/hashtag/for_U+{<i>code</i>}/and_#{<i>tag</i>}</code>
+			<ul>
+				<li><i>code</i>: Hexadecimal value, Unicode</li>
+				<li><i>tag</i>: String</li>
+			</ul>
+			<p>Returns list of statistics linked with the context of emoji used with hashtag</p>
+		</article>
+
+>>>>>>> Stashed changes
 	</main>
 	
 </body>
