@@ -8,6 +8,14 @@ use App\Hashtag;
 
 use Illuminate\Http\Request;
 
+
+/**
+ * Emoji Controller
+ * ------------------
+ * Handles and prepare responses for emoji data sub-routes
+ * Contains all methods related to emoji data.
+ */
+
 class EmojiController extends Controller
 {
     /**
