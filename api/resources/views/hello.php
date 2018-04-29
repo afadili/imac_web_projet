@@ -3,15 +3,47 @@
 <head>
 	<title>Hello</title>
 	<style type="text/css" media="screen">
-		body{
+		body
+		{
 			font-family: sans-serif;
+			max-width: 40rem;
+			margin:  auto;
+			margin-bottom: 6rem;
+		}
+
+		code 
+		{
+			display: inline-block;
+			background: #eee;
+			padding: .1rem .5rem;
+			border-radius: .2rem;
+			border:  solid 1px #CCC;
+		}
+
+		h1,h2,h3,h4,h5,h6{
+			margin-bottom: .5rem;
+			margin-top: 2em;
+		}
+
+		h4{
+			background: #FAFAFA;
+			padding: .5rem 0;
+			border-top:  solid 1px #ccc;
+		}
+
+		ul, p {
+			margin: .5rem 0;
+		}
+
+		i{
+			color:  red;
 		}
 	</style>
 </head>
 <body>
 	<header id="header" class="">
 		<h1>Emoji-tracker API</h1>	
-		<p>Back-end api for <i>Emoji-tracker</i> a analytics tool for emoji usage on tweeter.</p>
+		<p>Back-end api for <em>Emoji-tracker</em> a analytics tool for emoji usage on tweeter.</p>
 		<p>Part of university project in web developpement: <a href="https://www.ingenieur-imac.fr">IMAC</a>/<a href="https://www.u-pem.fr">UPEM</a></p>
 		<a href="http://server.piergabory.com:5000/">Emoji-tracker App</a>
 		<hr>
@@ -154,8 +186,6 @@
 			<p>Returns list of statistics linked with the context of emoji used with hashtag</p>
 		</article>
 
->>>>>>> Stashed changes
 	</main>
-	
 </body>
 </html>

@@ -12,7 +12,7 @@
 */
 
 
-$router->get('/', function () use ($router) {
+$router->get('/[api/help]', function () use ($router) {
     return view('hello');
 });
 
@@ -31,7 +31,7 @@ $router->group(['prefix' => 'api'], function() use ($router) {
 
     // HISTORIC
     $router->group(['prefix' => 'history'], function() use ($router) {
-    	$router->get('/U+{code}/by_{method}', ['uses' => 'HistoryController@emojiStatOverTime']);
+    	$router->get('/U+{code}/of_{method}', ['uses' => 'HistoryController@emojiStatOverTime']);
     });
 
     // EMOJI 
