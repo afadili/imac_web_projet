@@ -11,7 +11,7 @@ use App\Jobs\TwitterApiCall;
 class Statistics extends Model
 {
 	// CONSTANTS
-	const BATCH_TTL = 300;
+	const BATCH_TTL = $_ENV['BATCH_TTL'];
 	
     // PROPERTIES
 
