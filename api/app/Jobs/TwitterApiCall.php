@@ -20,7 +20,7 @@ class TwitterAPICall extends Job
 	 * Length of request before it stops.
 	 * @const Integer TIME_OUT in seconds
 	 */
-	const TIME_OUT = 10;
+	const TIME_OUT = 20;
 
 	/**
 	 * Target url for api requests

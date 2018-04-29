@@ -10,6 +10,9 @@ use App\Jobs\TwitterApiCall;
 
 class Statistics extends Model
 {
+	// CONSTANTS
+	const BATCH_TTL = 300;
+	
     // PROPERTIES
 
     /**
@@ -132,22 +135,27 @@ class Statistics extends Model
 		$batches = DB::table('batches');
 		
 		// get latest batch
-		$batch = $batches->orderBy('date')->first();
-
+		$batch = $batches->orderBy('date', 'desc')->first();
+		
 		// get timestamp
 		$batchdate = (new \DateTime($batch->date))->getTimestamp();
-		
+			
 		// check if batch is still active
-		if ($batchdate + TwitterApiCall::TIME_OUT < time())
+		if (time() - $batchdate > self::BATCH_TTL)
 		{
+			// create a new batch
+			echo "new batch\n";
 			$idBatch = $batches->insertGetId(['size' => $data->count()]);
 		} 
 		else 
 		{
-			$batches->orderBy('date')->limit(1)->increment('size', $data->count());
+			// increment batch size
+			$batches->orderBy('date', 'desc')->limit(1)->increment('size', $data->count());
 			$idBatch = $batch->id;
 		}
 		
+		
+		// insert stats
 		$statistics = self::insertGetId([
 			'nbTweets' => $data->count(),
 			'bestTweet' => $data->best(),
@@ -158,6 +166,8 @@ class Statistics extends Model
 			'idBatch' => $idBatch
 		]);
 		
+		
+		// Insert relation
 		DB::table('relations')
 			->insert([
 				'idStat' => $statistics,
