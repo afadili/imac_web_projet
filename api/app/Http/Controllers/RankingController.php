@@ -39,6 +39,8 @@ class RankingController extends Controller
 
         // group emojis columns in an emoji sub-array
         $formatedResults = [];
+        $totals= array_fill_keys($validParams, 0);
+
         foreach ($results as $result) {
             $new = ['emoji'=>[]];
             foreach ($result as $key => $value) {
@@ -49,12 +51,13 @@ class RankingController extends Controller
                 else
                 {
                     $new[$key] = $value;
+                    $totals[$key] += $value;
                 }
             }
             array_push($formatedResults,$new);
         }
 
-        return $formatedResults;
+        return ['data' => $formatedResults, 'totals' => $totals];
     }
 
     public function emojisSince($param, $date_min) {
