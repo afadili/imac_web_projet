@@ -74,6 +74,8 @@ class RankingController extends Controller
         // group columns from the emoji table in an emoji sub-array
         // and compute totals for each params
         $formatedResults = [];
+        $totals= array_fill_keys($validParams, 0);
+
         foreach ($results as $result) {
             $new = ['emoji'=>[]];
             foreach ($result as $key => $value) {
@@ -84,12 +86,13 @@ class RankingController extends Controller
                 else
                 {
                     $new[$key] = $value;
+                    $totals[$key] += $value;
                 }
             }
             array_push($formatedResults,$new);
         }
 
-        return $formatedResults;
+        return ['data' => $formatedResults, 'totals' => $totals];
     }
 
 
