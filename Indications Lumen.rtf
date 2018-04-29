@@ -1,9 +1,12 @@
 {\rtf1\ansi\ansicpg1252\cocoartf1561\cocoasubrtf400
-{\fonttbl\f0\fswiss\fcharset0 Helvetica;}
-{\colortbl;\red255\green255\blue255;\red102\green177\blue50;\red251\green2\blue7;\red251\green2\blue7;
-\red0\green0\blue0;\red253\green128\blue8;\red63\green63\blue63;\red249\green249\blue249;}
-{\*\expandedcolortbl;;\cssrgb\c46532\c73327\c25364;\cssrgb\c100000\c14913\c0;\cssrgb\c100000\c14913\c0;
-\cssrgb\c0\c0\c0;\cssrgb\c100000\c57637\c0;\cssrgb\c31373\c31373\c31373;\cssrgb\c98039\c98039\c98039;}
+{\fonttbl\f0\fswiss\fcharset0 Helvetica;\f1\fnil\fcharset0 Menlo-Regular;\f2\fnil\fcharset0 Menlo-Italic;
+}
+{\colortbl;\red255\green255\blue255;\red102\green177\blue50;\red251\green2\blue7;\red0\green0\blue0;
+\red253\green128\blue8;\red63\green63\blue63;\red249\green249\blue249;\red0\green0\blue0;\red255\green255\blue255;
+}
+{\*\expandedcolortbl;;\cssrgb\c46532\c73327\c25364;\cssrgb\c100000\c14913\c0;\cssrgb\c0\c0\c0;
+\cssrgb\c100000\c57637\c0;\cssrgb\c31373\c31373\c31373;\cssrgb\c98039\c98039\c98039;\csgray\c0;\cssrgb\c100000\c100000\c100000;
+}
 \paperw11900\paperh16840\margl1440\margr1440\vieww17960\viewh13340\viewkind0
 \pard\tx566\tx1133\tx1700\tx2267\tx2834\tx3401\tx3968\tx4535\tx5102\tx5669\tx6236\tx6803\pardirnatural\partightenfactor0
 
@@ -34,7 +37,7 @@ DB_PORT=\cf3 num\'e9ro de port\cf0 \
 DB_DATABASE=\cf3 Nom de la BDD \'e0 brancher\cf0 \
 DB_USERNAME=\cf3 login BDD (en local \'ab\'a0root\'a0\'bb)\cf0 \
 DB_PASSWORD=\cf3 MDP BDD (en local \'ab\'a0root\'a0\'bb pour Mac et \'91\'92 \'91\'92 pour Windows)\
-\cf0 DB_CHARSET=\cf4 utf8mb4 (permet de recevoir les caract\'e8res emojis)\cf0  \
+\cf0 DB_CHARSET=\cf3 utf8mb4 (permet de recevoir les caract\'e8res emojis)\cf0  \
 \
 CACHE_DRIVER=file\
 QUEUE_DRIVER=sync\
@@ -95,25 +98,25 @@ class \cf3 Emoji\cf0  extends Model\
 \fs22 \
 \
 \pard\pardeftab720\sl280\partightenfactor0
-\cf5 \expnd0\expndtw0\kerning0
+\cf4 \expnd0\expndtw0\kerning0
 $router->get('/', function () use ($router) \{\
     return $router->app->version();\
 \});\
 \
-\cf6 $router->group(['prefix' => 'api'], function () use ($router) \{\
-  $router->get('\cf3 emoji\cf6 ',  ['uses' => \'91\cf3 Emoji\cf6 Controller@showAll\cf3 Emojis\cf6 \'92]);\
+\cf5 $router->group(['prefix' => 'api'], function () use ($router) \{\
+  $router->get('\cf3 emoji\cf5 ',  ['uses' => \'91\cf3 Emoji\cf5 Controller@showAll\cf3 Emojis\cf5 \'92]);\
 \
-  $router->get('\cf3 emoji\cf6 /\{id\}', ['uses' => '\cf3 Emoji\cf6 Controller@showOne\cf3 Emoji\cf6 \'92]);\
+  $router->get('\cf3 emoji\cf5 /\{id\}', ['uses' => '\cf3 Emoji\cf5 Controller@showOne\cf3 Emoji\cf5 \'92]);\
 \
-  $router->post('\cf3 emoji\cf6 ', ['uses' => '\cf3 Emoji\cf6 Controller@create']);\
+  $router->post('\cf3 emoji\cf5 ', ['uses' => '\cf3 Emoji\cf5 Controller@create']);\
 \
-  $router->delete('\cf3 emoji\cf6 /\{id\}', ['uses' => '\cf3 Emoji\cf6 Controller@delete']);\
+  $router->delete('\cf3 emoji\cf5 /\{id\}', ['uses' => '\cf3 Emoji\cf5 Controller@delete']);\
 \
-  $router->put(\'91\cf3 emoji\cf6 /\{id\}', ['uses' => '\cf3 Emoji\cf6 Controller@update']);\
+  $router->put(\'91\cf3 emoji\cf5 /\{id\}', ['uses' => '\cf3 Emoji\cf5 Controller@update']);\
 \});\
 \
 
-\fs24 \cf5 6\'b0 
+\fs24 \cf4 6\'b0 
 \b Cr\'e9ation des controllers - cr\'e9ationr les diff\'e9rentes fonctions pour r\'e9cup\'e9rer des informations au format JSON, les mettre \'e0 jour, supprimer etc)
 \b0  : pour chaque \'e9l\'e9ment (emoji, mood, hashtag), cr\'e9er dans app/Http/Controllers un fichier NomController.php (par exemple EmojiController.php) et remplir comme suit (en rouge les modifications \'e0 faire selon le nom du fichier) :\
 \
@@ -121,40 +124,40 @@ $router->get('/', function () use ($router) \{\
 \
 namespace App\\Http\\Controllers;\
 \
-use App\\\cf3 Emoji\cf5 ;\
+use App\\\cf3 Emoji\cf4 ;\
 use Illuminate\\Http\\Request;\
 \
-class \cf3 Emoji\cf5 Controller extends Controller\
+class \cf3 Emoji\cf4 Controller extends Controller\
 \{\
 \
-    public function showAll\cf3 Emojis\cf5 ()\
+    public function showAll\cf3 Emojis\cf4 ()\
     \{\
-        return response()->json(\cf3 Emoji\cf5 ::all());\
+        return response()->json(\cf3 Emoji\cf4 ::all());\
     \}\
 \
-    public function showOne\cf3 Emoji\cf5 ($id)\
+    public function showOne\cf3 Emoji\cf4 ($id)\
     \{\
-        return response()->json(\cf3 Emoji\cf5 ::find($id));\
+        return response()->json(\cf3 Emoji\cf4 ::find($id));\
     \}\
 \
     public function create(Request $request)\
     \{\
-        $\cf3 emoji\cf5  = \cf3 Emoji\cf5 ::create($request->all());\
+        $\cf3 emoji\cf4  = \cf3 Emoji\cf4 ::create($request->all());\
 \
-        return response()->json($\cf3 emoji\cf5 , 201);\
+        return response()->json($\cf3 emoji\cf4 , 201);\
     \}\
 \
     public function update($id, Request $request)\
     \{\
-        $\cf3 emoji\cf5  = \cf3 Emoji\cf5 ::findOrFail($id);\
-        $\cf3 emoji\cf5 ->update($request->all());\
+        $\cf3 emoji\cf4  = \cf3 Emoji\cf4 ::findOrFail($id);\
+        $\cf3 emoji\cf4 ->update($request->all());\
 \
-        return response()->json($\cf3 emoji\cf5 , 200);\
+        return response()->json($\cf3 emoji\cf4 , 200);\
     \}\
 \
     public function delete($id)\
     \{\
-        \cf3 Emoji\cf5 ::findOrFail($id)->delete();\
+        \cf3 Emoji\cf4 ::findOrFail($id)->delete();\
         return response('Deleted Successfully', 200);\
     \}\
 \}\
@@ -163,15 +166,31 @@ class \cf3 Emoji\cf5 Controller extends Controller\
 \b Tester si tout fonctionne
 \b0  : 
 \b \cf3 IMPORTANT ! Avant de faire la moindre requ\'eate, ex\'e9cuter dans le terminal la commande \'ab\'a0php -S localhost:num\'e9ro_host -t public\'a0\'bb
-\b0 \cf5 . Si vous ne le faites pas, vos requ\'eates vous m\'e8neront\'85 dans le vide. Cette commande \'ab\'a0active\'a0\'bb Lumen en quelques sortes. Une fois cela fait, vous pouvez lancer des requ\'eates.\
+\b0 \cf4 . Si vous ne le faites pas, vos requ\'eates vous m\'e8neront\'85 dans le vide. Cette commande \'ab\'a0active\'a0\'bb Lumen en quelques sortes. Une fois cela fait, vous pouvez lancer des requ\'eates.\
 \
 Exemples (changer la partie rouge, mettez votre num\'e9ro de localhost) :\
 \
 \pard\pardeftab720\sl280\partightenfactor0
-\cf7 \cb8 http://localhost:\cf3 num\'e9ro_host\cf7 /api/emoji \'97> m\'e9thode GET qui va renvoyer tous les \'e9mojis\
-http://localhost:\cf3 num\'e9ro_host\cf7 /api/emoji/1138 \'97> m\'e9thode GET qui va renvoyer l\'92\'e9moji dont l\'92id est 1138 (\'e9moji qui crie ici)\
-http://localhost:\cf3 num\'e9ro_host\cf7 /api/mood \'97> m\'e9thode GET qui va renvoyer toutes les humeurs\
-http://localhost:\cf3 num\'e9ro_host\cf7 /api/mood/33 \'97> m\'e9thode GET qui va renvoyer l\'92humeur dont l\'92id est 33 (ici \'ab\'a0Curious\'a0\'bb)\
+\cf6 \cb7 http://localhost:\cf3 num\'e9ro_host\cf6 /api/emoji \'97> m\'e9thode GET qui va renvoyer tous les \'e9mojis\
+http://localhost:\cf3 num\'e9ro_host\cf6 /api/emoji/1138 \'97> m\'e9thode GET qui va renvoyer l\'92\'e9moji dont l\'92id est 1138 (\'e9moji qui crie ici)\
+http://localhost:\cf3 num\'e9ro_host\cf6 /api/mood \'97> m\'e9thode GET qui va renvoyer toutes les humeurs\
+http://localhost:\cf3 num\'e9ro_host\cf6 /api/mood/33 \'97> m\'e9thode GET qui va renvoyer l\'92humeur dont l\'92id est 33 (ici \'ab\'a0Curious\'a0\'bb)\
 etc\
 \
-(Evidemment pour r\'e9cup\'e9rer les infos des diff\'e9rentes tables, il faut qu\'92il y ait des donn\'e9es dedans).}
+(Evidemment pour r\'e9cup\'e9rer les infos des diff\'e9rentes tables, il faut qu\'92il y ait des donn\'e9es dedans).\
+\
+\
+8: pr\'e9parer les appels twitter API \
+$ crontab -e\
+
+\f1\fs22 \cf8 \cb9 \kerning1\expnd0\expndtw0 \CocoaLigature0 * * * * * php /
+\f2\i [Chemin-vers-le-projet]
+\f1\i0 /artisan schedule:run >> 
+\f2\i [Chemin-vers-les-logs]
+\f1\i0  2>&1\
+Pour ne pas avoir de logs envoyer \'e0 /dev/null
+\f0\fs24 \cf6 \cb7 \expnd0\expndtw0\kerning0
+\CocoaLigature1 \
+\
+\
+}

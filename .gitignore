@@ -26,3 +26,5 @@ yarn-debug.log*
 yarn-error.log*
 *.phpintel
 api/vendor
+api/schedule-logs
+api/logs
