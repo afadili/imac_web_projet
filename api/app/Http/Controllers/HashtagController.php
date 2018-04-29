@@ -21,7 +21,7 @@ class HashtagController extends Controller
     }
 
     // TODO : Documentation
-    public function getByEmoji($code) {
+    public function getByEmoji($code) {
     	// TODO
     }
 }
