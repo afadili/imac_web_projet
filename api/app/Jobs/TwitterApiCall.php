@@ -2,7 +2,7 @@
 
 namespace App\Jobs;
 
-class ExampleJob extends Job
+class TwitterAPICall extends Job
 {
     /**
      * Create a new job instance.
@@ -11,7 +11,7 @@ class ExampleJob extends Job
      */
     public function __construct()
     {
-        //
+        echo 'hello';
     }
 
     /**
@@ -21,6 +21,6 @@ class ExampleJob extends Job
      */
     public function handle()
     {
-        //
+        echo 'there';
     }
 }
